@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kingdom Sisters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+<style>
+/* ── Tokens ──────────────────────────────────────────── */
+:root {
+  --bg:        #18102C;
+  --bg-raised: #211540;
+  --bg-card:   #271A4A;
+  --border:    rgba(201, 153, 63, 0.18);
+  --border-hi: rgba(201, 153, 63, 0.42);
+  --text:      #F3EBD8;
+  --text-2:    #C4B09A;
+  --text-3:    #8B7BA8;
+  --gold:      #C9993F;
+  --gold-lt:   #E0B86A;
+  --mauve:     #9B718A;
+  --amethyst:  #8B6FBE;
+  --shadow:    0 2px 20px rgba(0,0,0,0.45);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg:        #F8F2E8;
+    --bg-raised: #EFE8D8;
+    --bg-card:   #FFFFFF;
+    --border:    rgba(139, 89, 30, 0.18);
+    --border-hi: rgba(139, 89, 30, 0.40);
+    --text:      #1E1228;
+    --text-2:    #5A4060;
+    --text-3:    #9B718A;
+    --gold:      #9B6A1A;
+    --gold-lt:   #B88030;
+    --mauve:     #7A4F6A;
+    --amethyst:  #6040A0;
+    --shadow:    0 2px 20px rgba(24, 16, 44, 0.12);
+  }
+}
+:root[data-theme="light"] {
+  --bg:        #F8F2E8;
+  --bg-raised: #EFE8D8;
+  --bg-card:   #FFFFFF;
+  --border:    rgba(139, 89, 30, 0.18);
+  --border-hi: rgba(139, 89, 30, 0.40);
+  --text:      #1E1228;
+  --text-2:    #5A4060;
+  --text-3:    #9B718A;
+  --gold:      #9B6A1A;
+  --gold-lt:   #B88030;
+  --mauve:     #7A4F6A;
+  --amethyst:  #6040A0;
+  --shadow:    0 2px 20px rgba(24, 16, 44, 0.12);
+}
+:root[data-theme="dark"] {
+  --bg:        #18102C;
+  --bg-raised: #211540;
+  --bg-card:   #271A4A;
+  --border:    rgba(201, 153, 63, 0.18);
+  --border-hi: rgba(201, 153, 63, 0.42);
+  --text:      #F3EBD8;
+  --text-2:    #C4B09A;
+  --text-3:    #8B7BA8;
+  --gold:      #C9993F;
+  --gold-lt:   #E0B86A;
+  --mauve:     #9B718A;
+  --amethyst:  #8B6FBE;
+  --shadow:    0 2px 20px rgba(0,0,0,0.45);
+}
+
+/* ── Reset & Base ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+  -webkit-font-smoothing: antialiased;
+}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 3px; }
+
+/* ── Layout ───────────────────────────────────────────── */
+.wrap {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Top bar ──────────────────────────────────────────── */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  padding: 14px 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.topbar-inner {
+  max-width: 620px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.wordmark {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.theme-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-3); background: none;
+  border: 1px solid var(--border); border-radius: 3px;
+  padding: 5px 12px; cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.theme-btn:hover { color: var(--gold); border-color: var(--border-hi); }
+.theme-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* ── Hero ─────────────────────────────────────────────── */
+.hero {
+  padding: 80px 0 64px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-glow {
+  position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+  width: 500px; height: 400px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(139, 111, 190, 0.18) 0%, rgba(155, 113, 138, 0.08) 50%, transparent 70%);
+  pointer-events: none;
+  animation: glow-pulse 8s ease-in-out infinite;
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+}
+.hero-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: '';
+  display: block; width: 28px; height: 1px;
+  background: var(--gold); opacity: 0.5;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(48px, 11vw, 72px);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  text-wrap: balance;
+  margin-bottom: 24px;
+  position: relative;
+}
+.hero-verse {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--text-2);
+  max-width: 460px;
+  margin: 0 auto;
+  text-wrap: balance;
+}
+.hero-verse cite {
+  display: block;
+  font-style: normal;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 10px;
+  opacity: 0.8;
+}
+
+/* ── Section anatomy ──────────────────────────────────── */
+.section { padding: 40px 0; }
+.section + .section { border-top: 1px solid var(--border); }
+
+.label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+  display: flex; align-items: center; gap: 10px;
+}
+.label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 26px;
+  color: var(--text);
+  margin-bottom: 8px;
+  text-wrap: balance;
+}
+.section-body {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.75;
+}
+
+/* ── Countdown ────────────────────────────────────────── */
+.meeting-line {
+  font-size: 12px; color: var(--text-3);
+  letter-spacing: 0.1em; margin-bottom: 36px;
+  text-align: center;
+}
+.countdown {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 0;
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
+.cd-unit {
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 8px 16px;
+  text-align: center;
+}
+.cd-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(48px, 12vw, 72px);
+  line-height: 1;
+  color: var(--text);
+  display: block;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.cd-lbl {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 9px; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text-3);
+  margin-top: 6px;
+  display: block;
+}
+
+/* ── Buttons ──────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 11px 26px;
+  border: none; border-radius: 3px;
+  cursor: pointer;
+  transition: opacity 0.18s, transform 0.15s;
+}
+.btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.btn:active { transform: scale(0.98); }
+.btn-gold {
+  background: var(--gold);
+  color: var(--bg);
+}
+.btn-gold:hover { opacity: 0.88; }
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border-hi);
+  color: var(--text-2);
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── RSVP ─────────────────────────────────────────────── */
+.rsvp-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  padding: 28px;
+  text-align: center;
+}
+.rsvp-lede { font-size: 15px; color: var(--text-2); margin-bottom: 20px; line-height: 1.65; }
+.rsvp-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.rsvp-status { font-size: 13px; color: var(--gold-lt); display: none; }
+.rsvp-count { font-size: 12px; color: var(--text-3); }
+
+/* ── Scripture ────────────────────────────────────────── */
+.filter-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
+.pill {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+  padding: 5px 13px;
+  border: 1px solid var(--border); border-radius: 99px;
+  background: none; color: var(--text-3); cursor: pointer;
+  transition: all 0.15s;
+}
+.pill.active, .pill:hover { border-color: var(--gold-lt); color: var(--gold-lt); }
+.pill:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.verse-panel {
+  border-left: 2px solid var(--gold);
+  padding: 0 0 0 22px;
+  min-height: 110px;
+  display: flex; flex-direction: column; justify-content: center;
+  margin-bottom: 20px;
+}
+.verse-q {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.65;
+  color: var(--text);
+  margin-bottom: 10px;
+  transition: opacity 0.3s;
+}
+.verse-ref {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold);
+}
+.verse-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.verse-saved { font-size: 12px; color: var(--mauve); font-style: italic; }
+
+/* ── Challenge ────────────────────────────────────────── */
+.challenge-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  padding: 28px;
+}
+.challenge-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 12px; }
+.challenge-icon-wrap { font-size: 28px; flex-shrink: 0; margin-top: 3px; }
+.challenge-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500; font-size: 22px;
+  color: var(--text); line-height: 1.2; margin-bottom: 4px;
+}
+.challenge-desc { font-size: 14px; color: var(--text-2); line-height: 1.75; }
+.challenge-footer { margin-top: 18px; }
+
+/* ── Questions ────────────────────────────────────────── */
+.q-list { display: flex; flex-direction: column; gap: 0; }
+.q-item {
+  display: flex; gap: 18px; align-items: flex-start;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+.q-item:last-child { border-bottom: none; }
+.q-n {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400; font-size: 32px; line-height: 1;
+  color: var(--border-hi);
+  flex-shrink: 0; width: 32px;
+  font-variant-numeric: oldstyle-nums;
+  margin-top: -2px;
+}
+.q-text { font-size: 15px; color: var(--text-2); line-height: 1.7; padding-top: 6px; }
+
+/* ── Icebreaker ───────────────────────────────────────── */
+.ice-center { text-align: center; }
+.ice-icon {
+  font-size: 40px; display: inline-block;
+  margin-bottom: 18px;
+}
+.ice-icon.spinning { animation: spin-once 0.55s cubic-bezier(.4,0,.2,1); }
+@keyframes spin-once { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+.ice-q {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 20px;
+  line-height: 1.6; color: var(--text);
+  margin-bottom: 22px; min-height: 60px;
+  max-width: 480px; margin-left: auto; margin-right: auto;
+}
+
+/* ── Info table ───────────────────────────────────────── */
+.info-tbl { width: 100%; border-collapse: collapse; }
+.info-tbl td {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  vertical-align: top;
+}
+.info-tbl tr:last-child td { border-bottom: none; }
+.info-tbl td:first-child {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text-3); width: 120px; padding-right: 16px;
+  padding-top: 14px;
+}
+.info-tbl td:last-child { color: var(--text); font-weight: 400; }
+
+/* ── Prayer wall ──────────────────────────────────────── */
+.prayer-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 24px; }
+.p-item {
+  display: flex; gap: 13px;
+  padding: 16px 0; border-bottom: 1px solid var(--border);
+}
+.p-item:first-child { border-top: 1px solid var(--border); }
+.p-dove { font-size: 14px; flex-shrink: 0; margin-top: 2px; opacity: 0.7; }
+.p-body { flex: 1; }
+.p-who { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+.p-msg { font-size: 14px; color: var(--text-2); line-height: 1.65; }
+.empty-prayers { font-size: 13px; color: var(--text-3); padding: 20px 0; text-align: center; }
+
+textarea {
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; line-height: 1.6;
+  background: var(--bg-raised);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 14px 16px;
+  resize: vertical; min-height: 88px;
+  outline: none; border-radius: 3px;
+  transition: border-color 0.2s;
+}
+textarea::placeholder { color: var(--text-3); }
+textarea:focus { border-color: var(--border-hi); }
+
+.form-row { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
+.anon-label {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12px; color: var(--text-3); cursor: pointer;
+}
+.anon-label input { accent-color: var(--gold); }
+
+/* ── Anon box ─────────────────────────────────────────── */
+.anon-intro { font-size: 14px; color: var(--text-2); line-height: 1.75; margin-bottom: 16px; }
+
+/* ── Footer ───────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 0 36px;
+  text-align: center;
+}
+.footer-crown { font-size: 22px; margin-bottom: 12px; display: block; opacity: 0.6; }
+.footer-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px; font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+.footer-verse {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13px; color: var(--text-3);
+}
+.footer-verse em { font-style: normal; color: var(--gold); opacity: 0.8; }
+
+/* ── Toast ────────────────────────────────────────────── */
+#toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  opacity: 0; pointer-events: none;
+  background: var(--bg-card); border: 1px solid var(--border-hi);
+  border-radius: 4px; padding: 10px 20px;
+  font-size: 13px; color: var(--text);
+  box-shadow: var(--shadow); z-index: 200;
+  transition: opacity 0.25s, transform 0.25s;
+  white-space: nowrap;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 440px) {
+  .wrap { padding: 0 16px; }
+  .cd-num { font-size: 40px; }
+  .hero { padding: 56px 0 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="wordmark">Kingdom Sisters</span>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">Light</button>
+  </div>
+</div>
+
+<!-- Hero -->
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <p class="hero-eyebrow">Spring Hill, Florida</p>
+    <h1 class="hero-title">Kingdom<br>Sisters</h1>
+    <p class="hero-verse">
+      "She is clothed with strength and dignity,<br>
+      and she laughs without fear of the future."
+      <cite>Proverbs 31:25</cite>
+    </p>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- 1 · Countdown -->
+  <section class="section">
+    <p class="label">Next Gathering</p>
+    <p class="meeting-line" id="meetingDateLabel">Loading…</p>
+    <div class="countdown">
+      <div class="cd-unit"><span class="cd-num" id="cd-d">00</span><span class="cd-lbl">Days</span></div>
+      <div class="cd-unit"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">Hours</span></div>
+      <div class="cd-unit"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">Mins</span></div>
+      <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">Secs</span></div>
+    </div>
+  </section>
+
+  <!-- 2 · Commitment -->
+  <section class="section">
+    <p class="label">Commitment</p>
+    <div class="rsvp-card">
+      <p class="rsvp-lede">Will you be joining your sisters at our next gathering?<br>Let us know — we'd love to save a seat for you.</p>
+      <div class="rsvp-actions">
+        <button class="btn btn-gold" id="rsvpBtn" onclick="rsvp()">I'll Be There</button>
+        <p class="rsvp-status" id="rsvpStatus">We'll see you there. We are so grateful for you. 🕊</p>
+        <p class="rsvp-count" id="rsvpCount"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Scripture -->
+  <section class="section">
+    <p class="label">Verse of the Week</p>
+    <div class="filter-row" id="filterRow">
+      <button class="pill active" onclick="setFilter('all',this)">All</button>
+      <button class="pill" onclick="setFilter('faith',this)">Faith</button>
+      <button class="pill" onclick="setFilter('grace',this)">Grace</button>
+      <button class="pill" onclick="setFilter('courage',this)">Courage</button>
+      <button class="pill" onclick="setFilter('purpose',this)">Purpose</button>
+      <button class="pill" onclick="setFilter('sisterhood',this)">Sisterhood</button>
+      <button class="pill" onclick="setFilter('prayer',this)">Prayer</button>
+    </div>
+    <div class="verse-panel">
+      <p class="verse-q" id="verseText">Press "Draw a Verse" to receive today's scripture.</p>
+      <p class="verse-ref" id="verseRef"></p>
+    </div>
+    <div class="verse-actions">
+      <button class="btn btn-gold" onclick="drawVerse()">Draw a Verse</button>
+      <button class="btn btn-outline" onclick="saveVerse()" id="saveBtn">Save to Journal</button>
+      <span class="verse-saved" id="savedNote"></span>
+    </div>
+  </section>
+
+  <!-- 4 · Weekly Challenge -->
+  <section class="section">
+    <p class="label">Weekly Challenge</p>
+    <div class="challenge-card">
+      <div class="challenge-header">
+        <div class="challenge-icon-wrap" id="challengeIcon">🌸</div>
+        <div>
+          <p class="challenge-name" id="challengeName">Loading…</p>
+        </div>
+      </div>
+      <p class="challenge-desc" id="challengeDesc"></p>
+      <div class="challenge-footer">
+        <button class="btn btn-outline" onclick="nextChallenge()">Next Challenge →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · Discussion Questions -->
+  <section class="section">
+    <p class="label">Discussion Questions</p>
+    <div class="q-list" id="qList"></div>
+  </section>
+
+  <!-- 6 · Icebreaker -->
+  <section class="section">
+    <p class="label">Icebreaker</p>
+    <div class="ice-center">
+      <div class="ice-icon" id="iceIcon">🌺</div>
+      <p class="ice-q" id="iceQ">Tap spin to land on a question for the group.</p>
+      <button class="btn btn-gold" onclick="spinIce()">Spin</button>
+    </div>
+  </section>
+
+  <!-- 7 · Group Info -->
+  <section class="section">
+    <p class="label">Group Details</p>
+    <table class="info-tbl">
+      <tr><td>Group</td><td>Kingdom Sisters</td></tr>
+      <tr><td>Purpose</td><td>Women growing together in faith — worshipping, studying Scripture, and serving the Kingdom of God side by side</td></tr>
+      <tr><td>Meets</td><td>Every Thursday</td></tr>
+      <tr><td>Time</td><td>9:30 AM – 12:00 PM (Eastern)</td></tr>
+      <tr><td>Location</td><td>Gigi DeHoyos' Home<br>2159 Maximilian Avenue<br>Spring Hill, FL</td></tr>
+      <tr><td>Open to</td><td>All women who love God and love people</td></tr>
+    </table>
+  </section>
+
+  <!-- 8 · Prayer Wall -->
+  <section class="section">
+    <p class="label">Prayer Wall</p>
+    <div class="prayer-list" id="prayerList"></div>
+    <textarea id="prayerInput" placeholder="Share a prayer request with your sisters…"></textarea>
+    <div class="form-row">
+      <label class="anon-label"><input type="checkbox" id="prayerAnon" /> Anonymous</label>
+      <button class="btn btn-gold" style="margin-left:auto;" onclick="submitPrayer()">Share Request</button>
+    </div>
+  </section>
+
+  <!-- 9 · Anonymous Questions -->
+  <section class="section">
+    <p class="label">Ask Anonymously</p>
+    <p class="anon-intro">A safe place to ask what's on your heart. No names, no judgment. Our leaders will address questions at the next gathering.</p>
+    <textarea id="anonInput" placeholder="Your question or thought…"></textarea>
+    <div class="form-row">
+      <button class="btn btn-gold" style="margin-left:auto;" onclick="submitAnon()">Submit →</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="wrap">
+    <span class="footer-crown">♛</span>
+    <p class="footer-name">Kingdom Sisters · Spring Hill, FL</p>
+    <p class="footer-verse">"Many women have done excellently, but <em>you surpass them all.</em>" — Prov 31:29</p>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+/* ── DATA ─────────────────────────────────── */
+const VERSES = [
+  { t:"She is clothed with strength and dignity, and she laughs without fear of the future.", r:"Proverbs 31:25", c:"courage" },
+  { t:"Many women have done excellently, but you surpass them all.", r:"Proverbs 31:29", c:"purpose" },
+  { t:"Charm is deceitful, and beauty is vain, but a woman who fears the Lord is to be praised.", r:"Proverbs 31:30", c:"faith" },
+  { t:"For I know the plans I have for you, declares the Lord, plans for welfare and not for evil, to give you a future and a hope.", r:"Jeremiah 29:11", c:"purpose" },
+  { t:"The Lord your God is in your midst, a mighty one who will save; he will rejoice over you with gladness; he will quiet you by his love.", r:"Zephaniah 3:17", c:"faith" },
+  { t:"I can do all things through him who strengthens me.", r:"Philippians 4:13", c:"courage" },
+  { t:"Be strong and courageous. Do not be frightened, and do not be dismayed, for the Lord your God is with you wherever you go.", r:"Joshua 1:9", c:"courage" },
+  { t:"She opens her hand to the poor and reaches out her hands to the needy.", r:"Proverbs 31:20", c:"purpose" },
+  { t:"Two are better than one, because they have a good reward for their toil. For if they fall, one will lift up the other.", r:"Ecclesiastes 4:9–10", c:"sisterhood" },
+  { t:"Bear one another's burdens, and so fulfill the law of Christ.", r:"Galatians 6:2", c:"sisterhood" },
+  { t:"And let us consider how to stir up one another to love and good works.", r:"Hebrews 10:24", c:"sisterhood" },
+  { t:"As iron sharpens iron, so one person sharpens another.", r:"Proverbs 27:17", c:"sisterhood" },
+  { t:"Do not be anxious about anything, but in everything by prayer and supplication with thanksgiving let your requests be made known to God.", r:"Philippians 4:6", c:"prayer" },
+  { t:"The prayer of a righteous person has great power as it is working.", r:"James 5:16", c:"prayer" },
+  { t:"Call to me and I will answer you, and will tell you great and hidden things that you have not known.", r:"Jeremiah 33:3", c:"prayer" },
+  { t:"Devote yourselves to prayer, being watchful and thankful.", r:"Colossians 4:2", c:"prayer" },
+  { t:"For by grace you have been saved through faith. And this is not your own doing; it is the gift of God.", r:"Ephesians 2:8", c:"grace" },
+  { t:"My grace is sufficient for you, for my power is made perfect in weakness.", r:"2 Corinthians 12:9", c:"grace" },
+  { t:"Let your speech always be gracious, seasoned with salt, so that you may know how you ought to answer each person.", r:"Colossians 4:6", c:"grace" },
+  { t:"Now faith is the assurance of things hoped for, the conviction of things not seen.", r:"Hebrews 11:1", c:"faith" },
+  { t:"Trust in the Lord with all your heart, and do not lean on your own understanding.", r:"Proverbs 3:5", c:"faith" },
+  { t:"For those who love God all things work together for good.", r:"Romans 8:28", c:"faith" },
+  { t:"She opens her mouth with wisdom, and the teaching of kindness is on her tongue.", r:"Proverbs 31:26", c:"purpose" },
+  { t:"You are a chosen race, a royal priesthood, a holy nation, a people for his own possession.", r:"1 Peter 2:9", c:"purpose" },
+  { t:"Rejoice always, pray without ceasing, give thanks in all circumstances; for this is the will of God in Christ Jesus for you.", r:"1 Thessalonians 5:16–18", c:"prayer" },
+  { t:"I praise you, for I am fearfully and wonderfully made. Wonderful are your works; my soul knows it very well.", r:"Psalm 139:14", c:"faith" },
+  { t:"A gracious woman gets honor.", r:"Proverbs 11:16", c:"grace" },
+  { t:"And my God will supply every need of yours according to his riches in glory in Christ Jesus.", r:"Philippians 4:19", c:"grace" },
+  { t:"Therefore encourage one another and build one another up, just as you are doing.", r:"1 Thessalonians 5:11", c:"sisterhood" },
+  { t:"She considers a field and buys it; with the fruit of her hands she plants a vineyard.", r:"Proverbs 31:16", c:"courage" },
+];
+
+const CHALLENGES = [
+  { icon:"📖", name:"Daily Quiet Time", desc:"Spend 15 minutes every morning this week in Scripture and prayer before opening your phone. Let His voice be the first you hear each day." },
+  { icon:"💌", name:"Encourage a Sister", desc:"Write a handwritten note or send a heartfelt message to a sister in your life. Let her know she is seen, valued, and prayed for." },
+  { icon:"🙏", name:"Pray for Three People", desc:"Choose three people — one who hurt you, one who needs healing, one who doesn't know Christ — and pray for them every day this week." },
+  { icon:"🤲", name:"Act of Service", desc:"Find one tangible way to serve someone outside your home this week. It can be small: a meal, a ride, listening without an agenda." },
+  { icon:"🌿", name:"Sabbath Rest", desc:"Choose one hour this week to fully unplug and rest in God's presence. No tasks, no scrolling — just stillness and gratitude." },
+  { icon:"🗣️", name:"Share Your Faith", desc:"Find a natural opportunity this week to share something God has done in your life with someone who might need to hear it." },
+  { icon:"🦋", name:"Fast and Seek", desc:"Skip one meal this week and use that time to fast and pray about something specific you're trusting God for in this season." },
+  { icon:"📝", name:"Memorize a Verse", desc:"Pick one scripture from this week's session and commit it to memory. Write it somewhere you'll see it every day." },
+  { icon:"🌸", name:"Forgiveness Walk", desc:"Is there someone you've been holding a grudge against? Take a walk, pray, and consciously release that person to God this week." },
+  { icon:"💰", name:"Generous Giving", desc:"Look for an opportunity to give generously this week — financially, in time, or in talent. Watch how God multiplies it." },
+  { icon:"👂", name:"Listen Without Fixing", desc:"When a friend shares this week, resist the urge to fix. Just listen, ask good questions, and pray with her. That is ministry." },
+  { icon:"✍️", name:"Gratitude Journal", desc:"Write down 10 things you're grateful for each day this week. Watch your perspective shift as you count His mercies." },
+];
+
+const QUESTIONS = [
+  "What is one area of your faith where you've seen God move recently — even in a small, quiet way?",
+  "How do you navigate seasons when prayer feels distant or dry? What brings you back to Him?",
+  "Is there a woman who has shaped your faith journey? What did she model for you?",
+  "Where are you feeling called to step out in courage right now, and what is holding you back?",
+  "How do you balance serving others with nurturing your own spiritual health and rest?",
+];
+
+const ICEBREAKERS = [
+  "If you could have coffee with any woman in the Bible, who would it be and what would you ask her?",
+  "What song has God put on your heart lately, and why?",
+  "Share a moment when God's timing was completely different from yours — and He was right.",
+  "What is one thing you wish every woman knew about herself in Christ?",
+  "Describe your faith journey in exactly three words.",
+  "What spiritual discipline has changed your life the most?",
+  "If your life had a life verse, what would it be?",
+  "What is something you're currently trusting God for?",
+  "Name someone you're quietly grateful for. What would you say to them?",
+  "What does 'walking in the Spirit' look like on an ordinary Tuesday for you?",
+  "Share a moment when a sister spoke something over you that you really needed to hear.",
+  "What Kingdom assignment do you feel God placing on your heart this season?",
+  "What is one lie you used to believe about yourself that God has replaced with truth?",
+  "If you could pray one thing for everyone in this room right now, what would it be?",
+  "What does community mean to you, and how has this group lived that out?",
+];
+
+const SEED_PRAYERS = [
+  { who:"Sister Maria", msg:"Please pray for my daughter's health — trusting God through a difficult season." },
+  { who:"Anonymous", msg:"Praying for provision and peace over my family as we face a job transition." },
+  { who:"Sister Yolanda", msg:"Asking for wisdom as I step into a new leadership role at work. I want to honor God in it." },
+];
+
+/* ── STATE ─────────────────────────────────── */
+let activeFilter = 'all';
+let currentVerse = null;
+let verseJournal = [];
+let challengeIdx = 0;
+let rsvpDone = false;
+let rsvpCount = 7;
+let iceIdx = Math.floor(Math.random() * ICEBREAKERS.length);
+let userPrayers = [];
+
+/* ── THEME ─────────────────────────────────── */
+function toggleTheme() {
+  const root = document.documentElement;
+  const cur = root.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  document.getElementById('themeBtn').textContent = next === 'dark' ? 'Light' : 'Dark';
+}
+
+/* ── TOAST ─────────────────────────────────── */
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+/* ── COUNTDOWN ─────────────────────────────── */
+function nextMeeting() {
+  const now = new Date();
+  let t = new Date(now);
+  t.setUTCHours(13, 30, 0, 0); // 9:30 AM ET = 1:30 PM UTC
+  // Move to next Thursday if needed
+  while (t.getUTCDay() !== 4 || t <= now) {
+    t.setUTCDate(t.getUTCDate() + 1);
+    t.setUTCHours(13, 30, 0, 0);
+  }
+  return t;
+}
+function tickCountdown() {
+  const target = nextMeeting();
+  const diff = target - Date.now();
+  if (diff <= 0) {
+    document.getElementById('meetingDateLabel').textContent = '🎉 Gathering is today — see you soon, sister!';
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor(diff % 86400000 / 3600000);
+  const m = Math.floor(diff % 3600000 / 60000);
+  const s = Math.floor(diff % 60000 / 1000);
+  document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+  const opts = { weekday:'long', month:'long', day:'numeric', year:'numeric' };
+  document.getElementById('meetingDateLabel').textContent =
+    target.toLocaleDateString('en-US', opts) + '  ·  9:30 AM ET';
+}
+setInterval(tickCountdown, 1000);
+tickCountdown();
+
+/* ── RSVP ──────────────────────────────────── */
+function updateRsvpUI() {
+  document.getElementById('rsvpCount').textContent = rsvpCount + ' sisters planning to attend';
+}
+function rsvp() {
+  if (rsvpDone) { toast('You already committed — we\'re so glad! 🙌'); return; }
+  rsvpDone = true; rsvpCount++;
+  const btn = document.getElementById('rsvpBtn');
+  btn.textContent = 'See You There ✦';
+  btn.style.opacity = '0.72'; btn.style.cursor = 'default';
+  document.getElementById('rsvpStatus').style.display = 'block';
+  updateRsvpUI();
+  toast('We\'re so excited to see you there! 🙏');
+}
+updateRsvpUI();
+
+/* ── SCRIPTURE ─────────────────────────────── */
+function setFilter(f, el) {
+  activeFilter = f;
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+function drawVerse() {
+  const pool = activeFilter === 'all' ? VERSES : VERSES.filter(v => v.c === activeFilter);
+  if (!pool.length) { toast('No verses for that theme.'); return; }
+  const v = pool[Math.floor(Math.random() * pool.length)];
+  currentVerse = v;
+  const el = document.getElementById('verseText');
+  el.style.opacity = '0';
+  setTimeout(() => {
+    el.textContent = '“' + v.t + '”';
+    document.getElementById('verseRef').textContent = '— ' + v.r;
+    document.getElementById('savedNote').textContent = '';
+    document.getElementById('saveBtn').textContent = 'Save to Journal';
+    el.style.opacity = '1';
+  }, 200);
+}
+function saveVerse() {
+  if (!currentVerse) { toast('Draw a verse first.'); return; }
+  if (verseJournal.some(v => v.r === currentVerse.r)) { toast('Already in your journal.'); return; }
+  verseJournal.push(currentVerse);
+  document.getElementById('savedNote').textContent = 'Saved (' + verseJournal.length + ')';
+  document.getElementById('saveBtn').textContent = '✓ Saved';
+  toast('Added to your verse journal 📒');
+}
+
+/* ── CHALLENGE ─────────────────────────────── */
+function renderChallenge() {
+  const c = CHALLENGES[challengeIdx % CHALLENGES.length];
+  document.getElementById('challengeIcon').textContent = c.icon;
+  document.getElementById('challengeName').textContent = c.name;
+  document.getElementById('challengeDesc').textContent = c.desc;
+}
+function nextChallenge() {
+  challengeIdx++;
+  renderChallenge();
+  toast('New challenge — you\'ve got this, sister! 💪');
+}
+challengeIdx = Math.floor(Date.now() / (7 * 86400000)) % CHALLENGES.length;
+renderChallenge();
+
+/* ── QUESTIONS ─────────────────────────────── */
+(function renderQuestions() {
+  const el = document.getElementById('qList');
+  QUESTIONS.forEach((q, i) => {
+    const row = document.createElement('div');
+    row.className = 'q-item';
+    row.innerHTML = '<span class="q-n">' + (i + 1) + '</span><p class="q-text">' + q + '</p>';
+    el.appendChild(row);
+  });
+})();
+
+/* ── ICEBREAKER ─────────────────────────────── */
+function spinIce() {
+  const icon = document.getElementById('iceIcon');
+  icon.classList.remove('spinning');
+  void icon.offsetWidth;
+  icon.classList.add('spinning');
+  const flowers = ['🌺','🌸','🌼','✨','🌷','💐','🌹','⭐','🌟','🦋'];
+  let ticks = 0;
+  const iv = setInterval(() => {
+    icon.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+    ticks++;
+    if (ticks >= 10) {
+      clearInterval(iv);
+      icon.textContent = '🌺';
+      iceIdx = Math.floor(Math.random() * ICEBREAKERS.length);
+      document.getElementById('iceQ').textContent = ICEBREAKERS[iceIdx];
+    }
+  }, 75);
+}
+document.getElementById('iceQ').textContent = ICEBREAKERS[iceIdx];
+
+/* ── PRAYER WALL ───────────────────────────── */
+function renderPrayers() {
+  const el = document.getElementById('prayerList');
+  const all = [...SEED_PRAYERS, ...userPrayers];
+  el.innerHTML = '';
+  if (!all.length) {
+    el.innerHTML = '<p class="empty-prayers">No prayer requests yet — be the first to share.</p>';
+    return;
+  }
+  all.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'p-item';
+    div.innerHTML = '<span class="p-dove">🕊</span><div class="p-body"><p class="p-who">' + p.who + '</p><p class="p-msg">' + p.msg + '</p></div>';
+    el.appendChild(div);
+  });
+}
+renderPrayers();
+
+function submitPrayer() {
+  const val = document.getElementById('prayerInput').value.trim();
+  if (!val) { toast('Please write your prayer request.'); return; }
+  const anon = document.getElementById('prayerAnon').checked;
+  userPrayers.push({ who: anon ? 'Anonymous' : 'You', msg: val });
+  document.getElementById('prayerInput').value = '';
+  renderPrayers();
+  toast('Your request has been shared. 🙏');
+}
+
+/* ── ANON QUESTIONS ────────────────────────── */
+function submitAnon() {
+  const val = document.getElementById('anonInput').value.trim();
+  if (!val) { toast('Please type your question first.'); return; }
+  document.getElementById('anonInput').value = '';
+  toast('Submitted anonymously. Thank you for trusting us. ✦');
+}
+</script>
+</body>
+</html>
