@@ -294,7 +294,32 @@ body {
 .rsvp-lede { font-size: 15px; color: var(--text-2); margin-bottom: 20px; line-height: 1.65; }
 .rsvp-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .rsvp-status { font-size: 13px; color: var(--gold-lt); display: none; }
-.rsvp-count { font-size: 12px; color: var(--text-3); }
+
+/* ── Modal ────────────────────────────────────────────── */
+.modal {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6); display: flex;
+  align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: var(--bg-card); padding: 28px;
+  border: 1px solid var(--border-hi);
+  border-radius: 6px; max-width: 400px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.rsvp-list {
+  font-size: 14px; color: var(--text-2);
+  background: var(--bg-raised); padding: 16px;
+  border-radius: 4px; margin-top: 12px;
+  max-height: 200px; overflow-y: auto;
+}
+.rsvp-item {
+  padding: 6px 0; color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+.rsvp-item:last-child { border-bottom: none; }
 
 /* ── Scripture ────────────────────────────────────────── */
 .filter-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
@@ -531,12 +556,25 @@ textarea:focus { border-color: var(--border-hi); }
     <div class="rsvp-card">
       <p class="rsvp-lede">Will you be joining your sisters at our next gathering?<br>Let us know — we'd love to save a seat for you.</p>
       <div class="rsvp-actions">
-        <button class="btn btn-gold" id="rsvpBtn" onclick="rsvp()">I'll Be There</button>
-        <p class="rsvp-status" id="rsvpStatus">We'll see you there. We are so grateful for you. 🕊</p>
-        <p class="rsvp-count" id="rsvpCount"></p>
+        <button class="btn btn-gold" id="rsvpBtn" onclick="openRsvpModal()">I'll Be There</button>
+        <p class="rsvp-status" id="rsvpStatus" style="display:none;">Thank you for your commitment! 🕊</p>
       </div>
+      <div id="rsvpList" style="margin-top: 20px;"></div>
     </div>
   </section>
+
+  <!-- RSVP Modal -->
+  <div id="rsvpModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 16px; color: var(--gold);">Who's Attending?</h3>
+      <p style="margin-bottom: 16px; color: var(--text-2);">Enter your name to confirm your attendance.</p>
+      <input type="text" id="nameInput" placeholder="Your name…" style="width: 100%; padding: 12px; margin-bottom: 16px; background: var(--bg-raised); border: 1px solid var(--border-hi); color: var(--text); border-radius: 4px; font-family: 'DM Sans', sans-serif;">
+      <div style="display: flex; gap: 12px;">
+        <button class="btn btn-gold" style="flex: 1;" onclick="submitRsvp()">Confirm</button>
+        <button style="flex: 1; padding: 12px; background: var(--bg-raised); border: 1px solid var(--border); color: var(--text); border-radius: 4px; cursor: pointer; font-family: 'DM Sans', sans-serif;" onclick="closeRsvpModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
 
   <!-- 3 · Scripture -->
   <section class="section">
@@ -727,8 +765,6 @@ let activeFilter = 'all';
 let currentVerse = null;
 let verseJournal = [];
 let challengeIdx = 0;
-let rsvpDone = false;
-let rsvpCount = 0;
 let iceIdx = Math.floor(Math.random() * ICEBREAKERS.length);
 let userPrayers = [];
 
@@ -790,19 +826,70 @@ setInterval(tickCountdown, 1000);
 tickCountdown();
 
 /* ── RSVP ──────────────────────────────────── */
-function updateRsvpUI() {
-  document.getElementById('rsvpCount').textContent = rsvpCount + ' sisters planning to attend';
+function getMeetingKey() {
+  const meetingDates = [
+    new Date(2026, 8, 10, 13, 30),
+    new Date(2026, 8, 17, 13, 30),
+    new Date(2026, 9, 15, 13, 30),
+    new Date(2026, 9, 22, 13, 30)
+  ];
+  const now = new Date();
+  for (const date of meetingDates) {
+    if (date > now) return date.toISOString().split('T')[0];
+  }
+  return meetingDates[meetingDates.length - 1].toISOString().split('T')[0];
 }
-function rsvp() {
-  if (rsvpDone) { toast('You already committed — we\'re so glad! 🙌'); return; }
-  rsvpDone = true; rsvpCount++;
-  const btn = document.getElementById('rsvpBtn');
-  btn.textContent = 'See You There ✦';
-  btn.style.opacity = '0.72'; btn.style.cursor = 'default';
-  document.getElementById('rsvpStatus').style.display = 'block';
+
+let rsvpList = (() => {
+  const currentMeeting = getMeetingKey();
+  const stored = JSON.parse(localStorage.getItem('rsvpData') || '{}');
+  if (stored.meetingDate !== currentMeeting) {
+    localStorage.setItem('rsvpData', JSON.stringify({meetingDate: currentMeeting, names: []}));
+    return [];
+  }
+  return stored.names || [];
+})();
+
+function openRsvpModal() {
+  document.getElementById('rsvpModal').style.display = 'flex';
+  document.getElementById('nameInput').focus();
+}
+
+function closeRsvpModal() {
+  document.getElementById('rsvpModal').style.display = 'none';
+  document.getElementById('nameInput').value = '';
+}
+
+function submitRsvp() {
+  const name = document.getElementById('nameInput').value.trim();
+  if (!name) { toast('Please enter your name.'); return; }
+  if (rsvpList.some(n => n.toLowerCase() === name.toLowerCase())) {
+    toast('You\'re already on the list! 🙌'); closeRsvpModal(); return;
+  }
+  rsvpList.push(name);
+  localStorage.setItem('rsvpData', JSON.stringify({meetingDate: getMeetingKey(), names: rsvpList}));
   updateRsvpUI();
+  closeRsvpModal();
   toast('We\'re so excited to see you there! 🙏');
 }
+
+function updateRsvpUI() {
+  const count = rsvpList.length;
+  if (count === 0) {
+    document.getElementById('rsvpList').innerHTML = '';
+    return;
+  }
+  const html = '<div class="rsvp-list"><div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 10px;">Sisters Attending</div>' +
+    rsvpList.map(n => `<div class="rsvp-item">✦ ${n}</div>`).join('') +
+    '</div>';
+  document.getElementById('rsvpList').innerHTML = html;
+  document.getElementById('rsvpStatus').style.display = 'block';
+}
+
+document.getElementById('nameInput')?.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') submitRsvp();
+});
+
 updateRsvpUI();
 
 /* ── SCRIPTURE ─────────────────────────────── */
