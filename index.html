@@ -557,9 +557,8 @@ textarea:focus { border-color: var(--border-hi); }
       <p class="rsvp-lede">Will you be joining your sisters at our next gathering?<br>Let us know — we'd love to save a seat for you.</p>
       <div class="rsvp-actions">
         <button class="btn btn-gold" id="rsvpBtn" onclick="openRsvpModal()">I'll Be There</button>
-        <p class="rsvp-status" id="rsvpStatus" style="display:none;">Thank you for your commitment! 🕊</p>
+        <p id="rsvpPersonal" style="margin-top: 16px; font-size: 16px; color: var(--gold); font-style: italic; display: none;"></p>
       </div>
-      <div id="rsvpList" style="margin-top: 20px;"></div>
     </div>
   </section>
 
@@ -638,7 +637,7 @@ textarea:focus { border-color: var(--border-hi); }
     <table class="info-tbl">
       <tr><td>Group</td><td>Kingdom Sisters</td></tr>
       <tr><td>Purpose</td><td>Women growing together in faith — worshipping, studying Scripture, and serving the Kingdom of God side by side</td></tr>
-      <tr><td>Meets</td><td>September 10 & 17, October 15–22</td></tr>
+      <tr><td>Meets</td><td>September 10 & 17</td></tr>
       <tr><td>Time</td><td>9:30 AM – 12:00 PM (Eastern)</td></tr>
       <tr><td>Location</td><td>Gigi DeHoyos' Home<br>2159 Maximilian Avenue<br>Spring Hill, FL</td></tr>
     </table>
@@ -653,6 +652,10 @@ textarea:focus { border-color: var(--border-hi); }
       <label class="anon-label"><input type="checkbox" id="prayerAnon" /> Anonymous</label>
       <button class="btn btn-gold" style="margin-left:auto;" onclick="submitPrayer()">Share Request</button>
     </div>
+    <div style="margin-top: 10px; display: flex; gap: 12px; font-size: 12px;">
+      <a href="mailto:rjaraalmonte@gmail.com?subject=Prayer Request" style="color: var(--text-3); text-decoration: underline;">📧 Email Prayer</a>
+      <a href="sms:3528030109" style="color: var(--text-3); text-decoration: underline;">💬 Text Prayer</a>
+    </div>
   </section>
 
   <!-- 9 · Anonymous Questions -->
@@ -662,6 +665,10 @@ textarea:focus { border-color: var(--border-hi); }
     <textarea id="anonInput" placeholder="Your question or thought…"></textarea>
     <div class="form-row">
       <button class="btn btn-gold" style="margin-left:auto;" onclick="submitAnon()">Submit →</button>
+    </div>
+    <div style="margin-top: 10px; display: flex; gap: 12px; font-size: 12px;">
+      <a href="mailto:rjaraalmonte@gmail.com?subject=Anonymous Question" style="color: var(--text-3); text-decoration: underline;">📧 Email Question</a>
+      <a href="sms:3528030109" style="color: var(--text-3); text-decoration: underline;">💬 Text Question</a>
     </div>
   </section>
 
@@ -789,18 +796,16 @@ function toast(msg) {
 /* ── COUNTDOWN ─────────────────────────────── */
 function nextMeeting() {
   const now = new Date();
-  // Meeting dates in 2026: Sept 10, Sept 17, Oct 15–22
+  // Meeting dates in 2026: Sept 10, Sept 17
   const meetingDates = [
     new Date(2026, 8, 10, 13, 30, 0, 0), // Sept 10, 9:30 AM ET
-    new Date(2026, 8, 17, 13, 30, 0, 0), // Sept 17, 9:30 AM ET
-    new Date(2026, 9, 15, 13, 30, 0, 0), // Oct 15, 9:30 AM ET
-    new Date(2026, 9, 22, 13, 30, 0, 0)  // Oct 22, 9:30 AM ET
+    new Date(2026, 8, 17, 13, 30, 0, 0)  // Sept 17, 9:30 AM ET
   ];
   // Find next upcoming date
   for (const date of meetingDates) {
     if (date > now) return date;
   }
-  // If no future dates, return Oct 22
+  // If no future dates, return Sept 17
   return meetingDates[meetingDates.length - 1];
 }
 function tickCountdown() {
@@ -829,9 +834,7 @@ tickCountdown();
 function getMeetingKey() {
   const meetingDates = [
     new Date(2026, 8, 10, 13, 30),
-    new Date(2026, 8, 17, 13, 30),
-    new Date(2026, 9, 15, 13, 30),
-    new Date(2026, 9, 22, 13, 30)
+    new Date(2026, 8, 17, 13, 30)
   ];
   const now = new Date();
   for (const date of meetingDates) {
@@ -840,14 +843,14 @@ function getMeetingKey() {
   return meetingDates[meetingDates.length - 1].toISOString().split('T')[0];
 }
 
-let rsvpList = (() => {
+let rsvpName = (() => {
   const currentMeeting = getMeetingKey();
   const stored = JSON.parse(localStorage.getItem('rsvpData') || '{}');
   if (stored.meetingDate !== currentMeeting) {
-    localStorage.setItem('rsvpData', JSON.stringify({meetingDate: currentMeeting, names: []}));
-    return [];
+    localStorage.setItem('rsvpData', JSON.stringify({meetingDate: currentMeeting, name: null}));
+    return null;
   }
-  return stored.names || [];
+  return stored.name || null;
 })();
 
 function openRsvpModal() {
@@ -863,27 +866,20 @@ function closeRsvpModal() {
 function submitRsvp() {
   const name = document.getElementById('nameInput').value.trim();
   if (!name) { toast('Please enter your name.'); return; }
-  if (rsvpList.some(n => n.toLowerCase() === name.toLowerCase())) {
-    toast('You\'re already on the list! 🙌'); closeRsvpModal(); return;
-  }
-  rsvpList.push(name);
-  localStorage.setItem('rsvpData', JSON.stringify({meetingDate: getMeetingKey(), names: rsvpList}));
+  rsvpName = name;
+  localStorage.setItem('rsvpData', JSON.stringify({meetingDate: getMeetingKey(), name: rsvpName}));
   updateRsvpUI();
   closeRsvpModal();
   toast('We\'re so excited to see you there! 🙏');
 }
 
 function updateRsvpUI() {
-  const count = rsvpList.length;
-  if (count === 0) {
-    document.getElementById('rsvpList').innerHTML = '';
+  if (!rsvpName) {
+    document.getElementById('rsvpPersonal').style.display = 'none';
     return;
   }
-  const html = '<div class="rsvp-list"><div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 10px;">Sisters Attending</div>' +
-    rsvpList.map(n => `<div class="rsvp-item">✦ ${n}</div>`).join('') +
-    '</div>';
-  document.getElementById('rsvpList').innerHTML = html;
-  document.getElementById('rsvpStatus').style.display = 'block';
+  document.getElementById('rsvpPersonal').textContent = `✦ We can't wait to see you, ${rsvpName}! ✦`;
+  document.getElementById('rsvpPersonal').style.display = 'block';
 }
 
 document.getElementById('nameInput')?.addEventListener('keypress', (e) => {
