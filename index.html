@@ -564,15 +564,7 @@ textarea:focus { border-color: var(--border-hi); }
   <!-- 3 · Scripture -->
   <section class="section">
     <p class="label">Verse of the Week</p>
-    <div class="filter-row" id="filterRow">
-      <button class="pill active" onclick="setFilter('all',this)">All</button>
-      <button class="pill" onclick="setFilter('faith',this)">Faith</button>
-      <button class="pill" onclick="setFilter('grace',this)">Grace</button>
-      <button class="pill" onclick="setFilter('courage',this)">Courage</button>
-      <button class="pill" onclick="setFilter('purpose',this)">Purpose</button>
-      <button class="pill" onclick="setFilter('sisterhood',this)">Sisterhood</button>
-      <button class="pill" onclick="setFilter('prayer',this)">Prayer</button>
-    </div>
+    <div class="filter-row" id="filterRow"></div>
     <div class="verse-panel">
       <p class="verse-q" id="verseText">Press "Draw a Verse" to receive today's scripture.</p>
       <p class="verse-ref" id="verseRef"></p>
@@ -622,7 +614,7 @@ textarea:focus { border-color: var(--border-hi); }
     <p class="label">Group Details</p>
     <table class="info-tbl">
       <tr><td>Group</td><td>Kingdom Sisters</td></tr>
-      <tr><td>Purpose</td><td>Women growing together in faith — worshipping, studying Scripture, and serving the Kingdom of God side by side</td></tr>
+      <tr><td>Purpose</td><td id="purposeTextCell">Women growing together in faith — worshipping, studying Scripture, and serving the Kingdom of God side by side</td></tr>
       <tr><td>Meets</td><td>September 10, 17 & 24</td></tr>
       <tr><td>Time</td><td>10:00 AM – 1:00 PM (Eastern)</td></tr>
       <tr><td>Location</td><td>Raquel's Home<br>1720 Alameda Dr<br>Spring Hill, FL</td></tr>
@@ -763,6 +755,38 @@ const TRANSLATIONS = {
     purpose: 'Purpose',
     sisterhood: 'Sisterhood',
     prayer: 'Prayer',
+    verses: [
+      { t:"She is clothed with strength and dignity, and she laughs without fear of the future.", r:"Proverbs 31:25", c:"courage" },
+      { t:"Many women have done excellently, but you surpass them all.", r:"Proverbs 31:29", c:"purpose" },
+      { t:"Charm is deceitful, and beauty is vain, but a woman who fears the Lord is to be praised.", r:"Proverbs 31:30", c:"faith" },
+      { t:"For I know the plans I have for you, declares the Lord, plans for welfare and not for evil, to give you a future and a hope.", r:"Jeremiah 29:11", c:"purpose" },
+      { t:"The Lord your God is in your midst, a mighty one who will save; he will rejoice over you with gladness; he will quiet you by his love.", r:"Zephaniah 3:17", c:"faith" },
+      { t:"I can do all things through him who strengthens me.", r:"Philippians 4:13", c:"courage" },
+      { t:"Be strong and courageous. Do not be frightened, and do not be dismayed, for the Lord your God is with you wherever you go.", r:"Joshua 1:9", c:"courage" },
+      { t:"She opens her hand to the poor and reaches out her hands to the needy.", r:"Proverbs 31:20", c:"purpose" },
+      { t:"Two are better than one, because they have a good reward for their toil. For if they fall, one will lift up the other.", r:"Ecclesiastes 4:9–10", c:"sisterhood" },
+      { t:"Bear one another's burdens, and so fulfill the law of Christ.", r:"Galatians 6:2", c:"sisterhood" },
+      { t:"And let us consider how to stir up one another to love and good works.", r:"Hebrews 10:24", c:"sisterhood" },
+      { t:"As iron sharpens iron, so one person sharpens another.", r:"Proverbs 27:17", c:"sisterhood" },
+      { t:"Do not be anxious about anything, but in everything by prayer and supplication with thanksgiving let your requests be made known to God.", r:"Philippians 4:6", c:"prayer" },
+      { t:"The prayer of a righteous person has great power as it is working.", r:"James 5:16", c:"prayer" },
+      { t:"Call to me and I will answer you, and will tell you great and hidden things that you have not known.", r:"Jeremiah 33:3", c:"prayer" },
+      { t:"Devote yourselves to prayer, being watchful and thankful.", r:"Colossians 4:2", c:"prayer" },
+      { t:"For by grace you have been saved through faith. And this is not your own doing; it is the gift of God.", r:"Ephesians 2:8", c:"grace" },
+      { t:"My grace is sufficient for you, for my power is made perfect in weakness.", r:"2 Corinthians 12:9", c:"grace" },
+      { t:"Let your speech always be gracious, seasoned with salt, so that you may know how you ought to answer each person.", r:"Colossians 4:6", c:"grace" },
+      { t:"Now faith is the assurance of things hoped for, the conviction of things not seen.", r:"Hebrews 11:1", c:"faith" },
+      { t:"Trust in the Lord with all your heart, and do not lean on your own understanding.", r:"Proverbs 3:5", c:"faith" },
+      { t:"For those who love God all things work together for good.", r:"Romans 8:28", c:"faith" },
+      { t:"She opens her mouth with wisdom, and the teaching of kindness is on her tongue.", r:"Proverbs 31:26", c:"purpose" },
+      { t:"You are a chosen race, a royal priesthood, a holy nation, a people for his own possession.", r:"1 Peter 2:9", c:"purpose" },
+      { t:"Rejoice always, pray without ceasing, give thanks in all circumstances; for this is the will of God in Christ Jesus for you.", r:"1 Thessalonians 5:16–18", c:"prayer" },
+      { t:"I praise you, for I am fearfully and wonderfully made. Wonderful are your works; my soul knows it very well.", r:"Psalm 139:14", c:"faith" },
+      { t:"A gracious woman gets honor.", r:"Proverbs 11:16", c:"grace" },
+      { t:"And my God will supply every need of yours according to his riches in glory in Christ Jesus.", r:"Philippians 4:19", c:"grace" },
+      { t:"Therefore encourage one another and build one another up, just as you are doing.", r:"1 Thessalonians 5:11", c:"sisterhood" },
+      { t:"She considers a field and buys it; with the fruit of her hands she plants a vineyard.", r:"Proverbs 31:16", c:"courage" },
+    ],
     drawVerse: 'Draw a Verse',
     saveJournal: 'Save to Journal',
     weeklyChallenge: 'Weekly Challenge',
@@ -793,6 +817,11 @@ const TRANSLATIONS = {
     meetingLocation: 'Raquel\'s Home<br>1720 Alameda Dr<br>Spring Hill, FL',
     purposeText: 'Women growing together in faith — worshipping, studying Scripture, and serving the Kingdom of God side by side',
     noPrayers: 'No prayer requests yet — be the first to share.',
+    seedPrayers: [
+      { who:"Sister Maria", msg:"Please pray for my daughter's health — trusting God through a difficult season." },
+      { who:"Anonymous", msg:"Praying for provision and peace over my family as we face a job transition." },
+      { who:"Sister Yolanda", msg:"Asking for wisdom as I step into a new leadership role at work. I want to honor God in it." },
+    ],
     days: 'Days',
     hours: 'Hours',
     mins: 'Mins',
@@ -868,6 +897,43 @@ const TRANSLATIONS = {
     purpose: 'Propósito',
     sisterhood: 'Hermandad',
     prayer: 'Oración',
+    seedPrayers: [
+      { who:"Hermana María", msg:"Por favor ora por la salud de mi hija — confiando en Dios en una temporada difícil." },
+      { who:"Anónimo", msg:"Orando por provisión y paz sobre mi familia mientras enfrentamos una transición laboral." },
+      { who:"Hermana Yolanda", msg:"Pidiendo sabiduría mientras doy un paso hacia un nuevo rol de liderazgo en el trabajo. Quiero honrar a Dios en esto." },
+    ],
+    verses: [
+      { t:"Está vestida de fuerza y dignidad, y se ríe sin temor al futuro.", r:"Proverbios 31:25", c:"courage" },
+      { t:"Muchas mujeres han hecho cosas excelentes, pero tú las superas a todas.", r:"Proverbios 31:29", c:"purpose" },
+      { t:"El encanto es engañoso y la belleza es vana, pero una mujer que teme al Señor será alabada.", r:"Proverbios 31:30", c:"faith" },
+      { t:"Porque sé los planes que tengo para ti, dice el Señor, planes para tu bienestar y no para tu mal, para darte un futuro y una esperanza.", r:"Jeremías 29:11", c:"purpose" },
+      { t:"El Señor tu Dios está en medio de ti, un poderoso que te salvará; se regocijará sobre ti con alegría; te calmará con su amor.", r:"Sofonías 3:17", c:"faith" },
+      { t:"Puedo hacer todas las cosas a través de él que me fortalece.", r:"Filipenses 4:13", c:"courage" },
+      { t:"Sé fuerte y valiente. No tengas miedo ni desmayes, porque el Señor tu Dios estará contigo dondequiera que vayas.", r:"Josué 1:9", c:"courage" },
+      { t:"Abre su mano al pobre y extiende sus manos al necesitado.", r:"Proverbios 31:20", c:"purpose" },
+      { t:"Dos son mejor que uno, porque tienen una buena recompensa por su trabajo. Porque si caen, uno levantará al otro.", r:"Eclesiastés 4:9–10", c:"sisterhood" },
+      { t:"Llevad los unos las cargas de los otros, y cumplid así la ley de Cristo.", r:"Gálatas 6:2", c:"sisterhood" },
+      { t:"Y consideremos cómo estimularnos unos a otros hacia el amor y las buenas obras.", r:"Hebreos 10:24", c:"sisterhood" },
+      { t:"Como el hierro agudiza el hierro, así un hombre agudiza a otro.", r:"Proverbios 27:17", c:"sisterhood" },
+      { t:"No estén ansiosos por nada, sino que en todo, por oración y súplica con acción de gracias, den a conocer sus peticiones a Dios.", r:"Filipenses 4:6", c:"prayer" },
+      { t:"La oración del justo tiene gran poder mientras está actuando.", r:"Santiago 5:16", c:"prayer" },
+      { t:"Clama a mí y te responderé, y te mostraré cosas grandes y ocultas que no conoces.", r:"Jeremías 33:3", c:"prayer" },
+      { t:"Dedíquense a la oración, estén atentos y sean agradecidos.", r:"Colosenses 4:2", c:"prayer" },
+      { t:"Porque por gracia habéis sido salvos por la fe. Y esto no es de vosotros, es don de Dios.", r:"Efesios 2:8", c:"grace" },
+      { t:"Mi gracia es suficiente para ti, porque mi poder se perfecciona en la debilidad.", r:"2 Corintios 12:9", c:"grace" },
+      { t:"Sea siempre vuestro habla con gracia, sazonada con sal, para que sepáis cómo debéis responder a cada persona.", r:"Colosenses 4:6", c:"grace" },
+      { t:"Ahora bien, la fe es la certeza de lo que se espera, la convicción de lo que no se ve.", r:"Hebreos 11:1", c:"faith" },
+      { t:"Confía en el Señor con todo tu corazón, y no te apoyes en tu propio entendimiento.", r:"Proverbios 3:5", c:"faith" },
+      { t:"Sabemos que a los que aman a Dios, todas las cosas les ayudan a bien.", r:"Romanos 8:28", c:"faith" },
+      { t:"Abre su boca con sabiduría, y la enseñanza de la bondad está en su lengua.", r:"Proverbios 31:26", c:"purpose" },
+      { t:"Ustedes son una raza elegida, un sacerdocio real, una nación santa, un pueblo adquirido para posesión de Dios.", r:"1 Pedro 2:9", c:"purpose" },
+      { t:"Gozaos siempre. Orad sin cesar. Dad gracias en todo, porque esta es la voluntad de Dios para con vosotros en Cristo Jesús.", r:"1 Tesalonicenses 5:16–18", c:"prayer" },
+      { t:"Te alabo, porque estoy hecho de una manera formidable y maravillosa; maravillosas son tus obras, y mi alma lo sabe muy bien.", r:"Salmo 139:14", c:"faith" },
+      { t:"Una mujer graciosa obtiene honor.", r:"Proverbios 11:16", c:"grace" },
+      { t:"Mi Dios, pues, suplirá todo lo que os falta conforme a sus riquezas en gloria en Cristo Jesús.", r:"Filipenses 4:19", c:"grace" },
+      { t:"Por lo tanto, anímense y edifíquense unos a otros, tal como lo están haciendo.", r:"1 Tesalonicenses 5:11", c:"sisterhood" },
+      { t:"Ella considera un campo y lo compra; con el fruto de sus manos planta una viña.", r:"Proverbios 31:16", c:"courage" },
+    ],
     drawVerse: 'Sacar un Versículo',
     saveJournal: 'Guardar en Diario',
     weeklyChallenge: 'Desafío Semanal',
@@ -973,6 +1039,43 @@ const TRANSLATIONS = {
     purpose: 'Propósito',
     sisterhood: 'Irmandade',
     prayer: 'Oração',
+    seedPrayers: [
+      { who:"Irmã Maria", msg:"Por favor orem pela saúde da minha filha — confiando em Deus durante uma temporada difícil." },
+      { who:"Anônimo", msg:"Orando por provisão e paz sobre minha família enquanto enfrentamos uma transição de emprego." },
+      { who:"Irmã Yolanda", msg:"Pedindo sabedoria enquanto dou um passo para um novo papel de liderança no trabalho. Quero honrar a Deus nisso." },
+    ],
+    verses: [
+      { t:"Ela é vestida de força e dignidade, e ri sem medo do futuro.", r:"Provérbios 31:25", c:"courage" },
+      { t:"Muitas mulheres fizeram coisas excelentes, mas você as supera todas.", r:"Provérbios 31:29", c:"purpose" },
+      { t:"O encanto é enganoso e a beleza é vã, mas uma mulher que teme o Senhor será elogiada.", r:"Provérbios 31:30", c:"faith" },
+      { t:"Porque eu conheço os planos que tenho para você, diz o Senhor, planos para seu bem e não para seu mal, para dar-lhe um futuro e uma esperança.", r:"Jeremias 29:11", c:"purpose" },
+      { t:"O Senhor seu Deus está no meio de você, um poderoso que o salvará; ele se regozijará sobre você com alegria; ele o acalmará por seu amor.", r:"Sofonias 3:17", c:"faith" },
+      { t:"Posso fazer todas as coisas através daquele que me fortalece.", r:"Filipenses 4:13", c:"courage" },
+      { t:"Seja forte e corajoso. Não tenha medo nem se desanime, pois o Senhor seu Deus está com você aonde quer que vá.", r:"Josué 1:9", c:"courage" },
+      { t:"Ela abre suas mãos ao pobre e estende as mãos ao necessitado.", r:"Provérbios 31:20", c:"purpose" },
+      { t:"Dois são melhores do que um, porque têm uma boa recompensa por seu trabalho. Porque se caem, um levanta o outro.", r:"Eclesiastes 4:9–10", c:"sisterhood" },
+      { t:"Levem as cargas uns dos outros, e assim cumpram a lei de Cristo.", r:"Gálatas 6:2", c:"sisterhood" },
+      { t:"E consideremos como nos estimular uns aos outros para o amor e as boas obras.", r:"Hebreus 10:24", c:"sisterhood" },
+      { t:"Como o ferro agudiza o ferro, assim um homem agudiza a outro.", r:"Provérbios 27:17", c:"sisterhood" },
+      { t:"Não se preocupem com nada, mas em tudo, pela oração e súplica com ação de graças, façam seus pedidos conhecidos a Deus.", r:"Filipenses 4:6", c:"prayer" },
+      { t:"A oração de um homem justo é poderosa e eficaz.", r:"Tiago 5:16", c:"prayer" },
+      { t:"Clame para mim e eu responderei, e contar-lhe-ei coisas grandes e ocultas que você não conhece.", r:"Jeremias 33:3", c:"prayer" },
+      { t:"Dediquem-se à oração, vigilantes e agradecidos.", r:"Colossenses 4:2", c:"prayer" },
+      { t:"Pois pela graça vocês foram salvos, por meio da fé. E isso não vem de vocês, é dom de Deus.", r:"Efésios 2:8", c:"grace" },
+      { t:"Minha graça é suficiente para você, pois meu poder é aperfeiçoado na fraqueza.", r:"2 Coríntios 12:9", c:"grace" },
+      { t:"Que sua fala seja sempre cheia de graça, temperada com sal, para que você saiba como responder a cada pessoa.", r:"Colossenses 4:6", c:"grace" },
+      { t:"Agora, a fé é a certeza do que se espera, a convicção de coisas que não se veem.", r:"Hebreus 11:1", c:"faith" },
+      { t:"Confie no Senhor de todo o seu coração, e não se apoie no seu próprio entendimento.", r:"Provérbios 3:5", c:"faith" },
+      { t:"Sabemos que para aqueles que amam a Deus, todas as coisas trabalham para o bem.", r:"Romanos 8:28", c:"faith" },
+      { t:"Ela abre sua boca com sabedoria, e o ensino da bondade está em sua língua.", r:"Provérbios 31:26", c:"purpose" },
+      { t:"Vocês são uma raça escolhida, um sacerdócio real, uma nação santa, um povo adquirido para propriedade de Deus.", r:"1 Pedro 2:9", c:"purpose" },
+      { t:"Regozijem-se sempre. Orem sem cessar. Deem graças em tudo, porque essa é a vontade de Deus em Cristo Jesus para vocês.", r:"1 Tessalonicenses 5:16–18", c:"prayer" },
+      { t:"Eu te louvo, porque sou feito de maneira maravilhosa; maravilhosas são as tuas obras; minha alma o sabe muito bem.", r:"Salmo 139:14", c:"faith" },
+      { t:"Uma mulher graciosa obtém honra.", r:"Provérbios 11:16", c:"grace" },
+      { t:"E meu Deus suprirá todas as necessidades de vocês conforme suas riquezas em glória em Cristo Jesus.", r:"Filipenses 4:19", c:"grace" },
+      { t:"Portanto, encorajem-se e edifiquem-se mutuamente, como vocês estão fazendo.", r:"1 Tessalonicenses 5:11", c:"sisterhood" },
+      { t:"Ela considera um campo e o compra; com o fruto de suas mãos ela planta uma vinha.", r:"Provérbios 31:16", c:"courage" },
+    ],
     drawVerse: 'Tirar um Versículo',
     saveJournal: 'Salvar no Diário',
     weeklyChallenge: 'Desafio Semanal',
@@ -1125,6 +1228,7 @@ function updatePageLanguage() {
   // Update anon intro
   document.querySelector('.anon-intro').textContent = t('safePlace');
   // Update table
+  document.getElementById('purposeTextCell').textContent = t('purposeText');
   const tableRows = document.querySelectorAll('.info-tbl td:last-child');
   if (tableRows[2]) tableRows[2].textContent = t('meetingDate');
   if (tableRows[3]) tableRows[3].textContent = t('meetingTime');
@@ -1133,6 +1237,7 @@ function updatePageLanguage() {
   renderChallenge();
   renderQuestions();
   updateIcebreaker();
+  renderFilterPills();
 }
 
 // Set initial language button state
@@ -1257,13 +1362,26 @@ document.getElementById('nameInput')?.addEventListener('keypress', (e) => {
 updateRsvpUI();
 
 /* ── SCRIPTURE ─────────────────────────────── */
+function renderFilterPills() {
+  const filterRow = document.getElementById('filterRow');
+  filterRow.innerHTML = '';
+  const categories = ['all', 'faith', 'grace', 'courage', 'purpose', 'sisterhood', 'prayer'];
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'pill' + (cat === activeFilter ? ' active' : '');
+    btn.textContent = t(cat);
+    btn.onclick = function() { setFilter(cat, this); };
+    filterRow.appendChild(btn);
+  });
+}
 function setFilter(f, el) {
   activeFilter = f;
   document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
 }
 function drawVerse() {
-  const pool = activeFilter === 'all' ? VERSES : VERSES.filter(v => v.c === activeFilter);
+  const verses = t('verses');
+  const pool = activeFilter === 'all' ? verses : verses.filter(v => v.c === activeFilter);
   if (!pool.length) { toast(t('noVersesTheme')); return; }
   const v = pool[Math.floor(Math.random() * pool.length)];
   currentVerse = v;
@@ -1342,11 +1460,13 @@ function updateIcebreaker() {
   document.getElementById('iceQ').textContent = icebreakers[iceIdx];
 }
 updateIcebreaker();
+renderFilterPills();
 
 /* ── PRAYER WALL ───────────────────────────── */
 function renderPrayers() {
   const el = document.getElementById('prayerList');
-  const all = [...SEED_PRAYERS, ...userPrayers];
+  const seedPrayers = t('seedPrayers');
+  const all = [...seedPrayers, ...userPrayers];
   el.innerHTML = '';
   if (!all.length) {
     el.innerHTML = '<p class="empty-prayers">' + t('noPrayers') + '</p>';
