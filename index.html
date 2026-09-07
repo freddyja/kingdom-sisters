@@ -10,39 +10,6 @@
 <style>
 /* ── Tokens ──────────────────────────────────────────── */
 :root {
-  --bg:        #18102C;
-  --bg-raised: #211540;
-  --bg-card:   #271A4A;
-  --border:    rgba(201, 153, 63, 0.18);
-  --border-hi: rgba(201, 153, 63, 0.42);
-  --text:      #F3EBD8;
-  --text-2:    #C4B09A;
-  --text-3:    #8B7BA8;
-  --gold:      #C9993F;
-  --gold-lt:   #E0B86A;
-  --mauve:     #9B718A;
-  --amethyst:  #8B6FBE;
-  --shadow:    0 2px 20px rgba(0,0,0,0.45);
-}
-
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --bg:        #F8F2E8;
-    --bg-raised: #EFE8D8;
-    --bg-card:   #FFFFFF;
-    --border:    rgba(139, 89, 30, 0.18);
-    --border-hi: rgba(139, 89, 30, 0.40);
-    --text:      #1E1228;
-    --text-2:    #5A4060;
-    --text-3:    #9B718A;
-    --gold:      #9B6A1A;
-    --gold-lt:   #B88030;
-    --mauve:     #7A4F6A;
-    --amethyst:  #6040A0;
-    --shadow:    0 2px 20px rgba(24, 16, 44, 0.12);
-  }
-}
-:root[data-theme="light"] {
   --bg:        #F8F2E8;
   --bg-raised: #EFE8D8;
   --bg-card:   #FFFFFF;
@@ -57,21 +24,7 @@
   --amethyst:  #6040A0;
   --shadow:    0 2px 20px rgba(24, 16, 44, 0.12);
 }
-:root[data-theme="dark"] {
-  --bg:        #18102C;
-  --bg-raised: #211540;
-  --bg-card:   #271A4A;
-  --border:    rgba(201, 153, 63, 0.18);
-  --border-hi: rgba(201, 153, 63, 0.42);
-  --text:      #F3EBD8;
-  --text-2:    #C4B09A;
-  --text-3:    #8B7BA8;
-  --gold:      #C9993F;
-  --gold-lt:   #E0B86A;
-  --mauve:     #9B718A;
-  --amethyst:  #8B6FBE;
-  --shadow:    0 2px 20px rgba(0,0,0,0.45);
-}
+
 
 /* ── Reset & Base ─────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -153,17 +106,6 @@ body {
   text-transform: uppercase;
   color: var(--gold);
 }
-.theme-btn {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px; font-weight: 500;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--text-3); background: none;
-  border: 1px solid var(--border); border-radius: 3px;
-  padding: 5px 12px; cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
-}
-.theme-btn:hover { color: var(--gold); border-color: var(--border-hi); }
-.theme-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 /* ── Hero ─────────────────────────────────────────────── */
 .hero {
@@ -562,7 +504,6 @@ textarea:focus { border-color: var(--border-hi); }
 <div class="topbar">
   <div class="topbar-inner">
     <span class="wordmark">Kingdom Sisters</span>
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">Light</button>
   </div>
 </div>
 
@@ -1018,14 +959,6 @@ let iceIdx = Math.floor(Math.random() * ICEBREAKERS.length);
 let userPrayers = JSON.parse(localStorage.getItem('userPrayers') || '[]');
 let currentLang = localStorage.getItem('language') || 'en';
 
-/* ── THEME ─────────────────────────────────── */
-function toggleTheme() {
-  const root = document.documentElement;
-  const cur = root.getAttribute('data-theme');
-  const next = cur === 'dark' ? 'light' : 'dark';
-  root.setAttribute('data-theme', next);
-  document.getElementById('themeBtn').textContent = next === 'dark' ? 'Light' : 'Dark';
-}
 
 /* ── LANGUAGE ──────────────────────────────── */
 function setLanguage(lang) {
