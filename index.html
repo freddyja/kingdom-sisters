@@ -575,6 +575,19 @@ textarea:focus { border-color: var(--border-hi); }
     </div>
   </div>
 
+  <!-- Send Prayer/Question Modal -->
+  <div id="sendModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 16px; color: var(--gold);" id="sendModalTitle">Send This?</h3>
+      <p style="margin-bottom: 20px; color: var(--text-2);">How would you like to share this with Raquel?</p>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button class="btn btn-gold" style="width: 100%;" onclick="sendViaEmail()">📧 Send via Email</button>
+        <button class="btn btn-gold" style="width: 100%;" onclick="sendViaSMS()">💬 Send via Text</button>
+        <button style="width: 100%; padding: 12px; background: var(--bg-raised); border: 1px solid var(--border); color: var(--text); border-radius: 4px; cursor: pointer; font-family: 'DM Sans', sans-serif;" onclick="closeSendModal()">Just Save Locally</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 3 · Scripture -->
   <section class="section">
     <p class="label">Verse of the Week</p>
@@ -652,10 +665,6 @@ textarea:focus { border-color: var(--border-hi); }
       <label class="anon-label"><input type="checkbox" id="prayerAnon" /> Anonymous</label>
       <button class="btn btn-gold" style="margin-left:auto;" onclick="submitPrayer()">Share Request</button>
     </div>
-    <div style="margin-top: 10px; display: flex; gap: 12px; font-size: 12px;">
-      <a href="mailto:rjaraalmonte@gmail.com?subject=Prayer Request" style="color: var(--text-3); text-decoration: underline;">📧 Email Prayer</a>
-      <a href="sms:3528030109" style="color: var(--text-3); text-decoration: underline;">💬 Text Prayer</a>
-    </div>
   </section>
 
   <!-- 9 · Anonymous Questions -->
@@ -665,10 +674,6 @@ textarea:focus { border-color: var(--border-hi); }
     <textarea id="anonInput" placeholder="Your question or thought…"></textarea>
     <div class="form-row">
       <button class="btn btn-gold" style="margin-left:auto;" onclick="submitAnon()">Submit →</button>
-    </div>
-    <div style="margin-top: 10px; display: flex; gap: 12px; font-size: 12px;">
-      <a href="mailto:rjaraalmonte@gmail.com?subject=Anonymous Question" style="color: var(--text-3); text-decoration: underline;">📧 Email Question</a>
-      <a href="sms:3528030109" style="color: var(--text-3); text-decoration: underline;">💬 Text Question</a>
     </div>
   </section>
 
@@ -826,7 +831,7 @@ function tickCountdown() {
   document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
   const opts = { weekday:'long', month:'long', day:'numeric', year:'numeric' };
   document.getElementById('meetingDateLabel').textContent =
-    target.toLocaleDateString('en-US', opts) + '  ·  9:30 AM ET';
+    target.toLocaleDateString('en-US', opts) + '  ·  10:00 AM ET';
 }
 setInterval(tickCountdown, 1000);
 tickCountdown();
@@ -971,6 +976,9 @@ function spinIce() {
 document.getElementById('iceQ').textContent = ICEBREAKERS[iceIdx];
 
 /* ── PRAYER WALL ───────────────────────────── */
+let pendingContent = '';
+let pendingType = '';
+
 function renderPrayers() {
   const el = document.getElementById('prayerList');
   const all = [...SEED_PRAYERS, ...userPrayers];
@@ -996,7 +1004,10 @@ function submitPrayer() {
   localStorage.setItem('userPrayers', JSON.stringify(userPrayers));
   document.getElementById('prayerInput').value = '';
   renderPrayers();
-  toast('Your request has been shared. 🙏');
+  pendingContent = val;
+  pendingType = 'prayer';
+  document.getElementById('sendModalTitle').textContent = 'Share Prayer Request?';
+  openSendModal();
 }
 
 /* ── ANON QUESTIONS ────────────────────────── */
@@ -1004,7 +1015,36 @@ function submitAnon() {
   const val = document.getElementById('anonInput').value.trim();
   if (!val) { toast('Please type your question first.'); return; }
   document.getElementById('anonInput').value = '';
-  toast('Submitted anonymously. Thank you for trusting us. ✦');
+  pendingContent = val;
+  pendingType = 'question';
+  document.getElementById('sendModalTitle').textContent = 'Share Question?';
+  openSendModal();
+}
+
+/* ── SEND MODAL ────────────────────────────── */
+function openSendModal() {
+  document.getElementById('sendModal').style.display = 'flex';
+}
+
+function closeSendModal() {
+  document.getElementById('sendModal').style.display = 'none';
+  pendingContent = '';
+  pendingType = '';
+}
+
+function sendViaEmail() {
+  const subject = pendingType === 'prayer' ? 'Prayer Request' : 'Anonymous Question';
+  const body = encodeURIComponent(pendingContent);
+  window.location.href = `mailto:rjaraalmonte@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+  closeSendModal();
+  toast(pendingType === 'prayer' ? 'Opening email…' : 'Opening email…');
+}
+
+function sendViaSMS() {
+  const message = pendingType === 'prayer' ? `Prayer Request: ${pendingContent}` : `Question: ${pendingContent}`;
+  window.location.href = `sms:3528030109?body=${encodeURIComponent(message)}`;
+  closeSendModal();
+  toast(pendingType === 'prayer' ? 'Opening text…' : 'Opening text…');
 }
 </script>
 </body>
