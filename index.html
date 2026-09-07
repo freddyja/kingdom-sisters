@@ -495,9 +495,9 @@ textarea:focus { border-color: var(--border-hi); }
 
 <!-- Language Bar -->
 <div class="lang-bar">
-  <button class="lang-btn active" onclick="setLanguage('en')">🇺🇸 English</button>
-  <button class="lang-btn" onclick="setLanguage('es')">🇲🇽 Español</button>
-  <button class="lang-btn" onclick="setLanguage('pt')">🇧🇷 Português</button>
+  <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">🇺🇸 English</button>
+  <button class="lang-btn" data-lang="es" onclick="setLanguage('es')">🇲🇽 Español</button>
+  <button class="lang-btn" data-lang="pt" onclick="setLanguage('pt')">🇧🇷 Português</button>
 </div>
 
 <!-- Top bar -->
@@ -813,6 +813,44 @@ const TRANSLATIONS = {
     newChallenge: 'New challenge — you\'ve got this, sister! 💪',
     yourRequest: 'Your request has been shared. 🙏',
     thanksTrusting: 'Submitted anonymously. Thank you for trusting us. ✦',
+    challenges: [
+      { icon:"📖", name:"Daily Quiet Time", desc:"Spend 15 minutes every morning this week in Scripture and prayer before opening your phone. Let His voice be the first you hear each day." },
+      { icon:"💌", name:"Encourage a Sister", desc:"Write a handwritten note or send a heartfelt message to a sister in your life. Let her know she is seen, valued, and prayed for." },
+      { icon:"🙏", name:"Pray for Three People", desc:"Choose three people — one who hurt you, one who needs healing, one who doesn't know Christ — and pray for them every day this week." },
+      { icon:"🤲", name:"Act of Service", desc:"Find one tangible way to serve someone outside your home this week. It can be small: a meal, a ride, listening without an agenda." },
+      { icon:"🌿", name:"Sabbath Rest", desc:"Choose one hour this week to fully unplug and rest in God's presence. No tasks, no scrolling — just stillness and gratitude." },
+      { icon:"🗣️", name:"Share Your Faith", desc:"Find a natural opportunity this week to share something God has done in your life with someone who might need to hear it." },
+      { icon:"🦋", name:"Fast and Seek", desc:"Skip one meal this week and use that time to fast and pray about something specific you're trusting God for in this season." },
+      { icon:"📝", name:"Memorize a Verse", desc:"Pick one scripture from this week's session and commit it to memory. Write it somewhere you'll see it every day." },
+      { icon:"🌸", name:"Forgiveness Walk", desc:"Is there someone you've been holding a grudge against? Take a walk, pray, and consciously release that person to God this week." },
+      { icon:"💰", name:"Generous Giving", desc:"Look for an opportunity to give generously this week — financially, in time, or in talent. Watch how God multiplies it." },
+      { icon:"👂", name:"Listen Without Fixing", desc:"When a friend shares this week, resist the urge to fix. Just listen, ask good questions, and pray with her. That is ministry." },
+      { icon:"✍️", name:"Gratitude Journal", desc:"Write down 10 things you're grateful for each day this week. Watch your perspective shift as you count His mercies." },
+    ],
+    questions: [
+      "What is one area of your faith where you've seen God move recently — even in a small, quiet way?",
+      "How do you navigate seasons when prayer feels distant or dry? What brings you back to Him?",
+      "Is there a woman who has shaped your faith journey? What did she model for you?",
+      "Where are you feeling called to step out in courage right now, and what is holding you back?",
+      "How do you balance serving others with nurturing your own spiritual health and rest?",
+    ],
+    icebreakers: [
+      "If you could have coffee with any woman in the Bible, who would it be and what would you ask her?",
+      "What song has God put on your heart lately, and why?",
+      "Share a moment when God's timing was completely different from yours — and He was right.",
+      "What is one thing you wish every woman knew about herself in Christ?",
+      "Describe your faith journey in exactly three words.",
+      "What spiritual discipline has changed your life the most?",
+      "If your life had a life verse, what would it be?",
+      "What is something you're currently trusting God for?",
+      "Name someone you're quietly grateful for. What would you say to them?",
+      "What does 'walking in the Spirit' look like on an ordinary Tuesday for you?",
+      "Share a moment when a sister spoke something over you that you really needed to hear.",
+      "What Kingdom assignment do you feel God placing on your heart this season?",
+      "What is one lie you used to believe about yourself that God has replaced with truth?",
+      "If you could pray one thing for everyone in this room right now, what would it be?",
+      "What does community mean to you, and how has this group lived that out?",
+    ]
   },
   es: {
     nextGathering: 'Próxima Reunión',
@@ -880,6 +918,44 @@ const TRANSLATIONS = {
     newChallenge: '¡Nuevo desafío — lo tienes, hermana! 💪',
     yourRequest: 'Tu solicitud ha sido compartida. 🙏',
     thanksTrusting: 'Enviado anónimamente. Gracias por confiar en nosotras. ✦',
+    challenges: [
+      { icon:"📖", name:"Tiempo Tranquilo Diario", desc:"Dedica 15 minutos cada mañana esta semana a la Escritura y la oración antes de abrir tu teléfono. Deja que Su voz sea la primera que escuches cada día." },
+      { icon:"💌", name:"Anima a una Hermana", desc:"Escribe una nota manuscrita o envía un mensaje sincero a una hermana en tu vida. Hazle saber que es vista, valorada y es motivo de tus oraciones." },
+      { icon:"🙏", name:"Ora por Tres Personas", desc:"Elige tres personas — una que te hirió, una que necesita sanación, una que no conoce a Cristo — y ora por ellas todos los días esta semana." },
+      { icon:"🤲", name:"Acto de Servicio", desc:"Encuentra una forma tangible de servir a alguien fuera de tu hogar esta semana. Puede ser pequeño: una comida, un viaje, escuchar sin agenda." },
+      { icon:"🌿", name:"Descanso Sabático", desc:"Elige una hora esta semana para desconectarte completamente y descansar en la presencia de Dios. Sin tareas, sin redes sociales — solo quietud y gratitud." },
+      { icon:"🗣️", name:"Comparte Tu Fe", desc:"Encuentra una oportunidad natural esta semana para compartir algo que Dios ha hecho en tu vida con alguien que podría necesitar escucharlo." },
+      { icon:"🦋", name:"Ayuna y Busca", desc:"Salta una comida esta semana y usa ese tiempo para ayunar y orar por algo específico en lo que estés confiando a Dios en esta temporada." },
+      { icon:"📝", name:"Memoriza un Versículo", desc:"Elige una escritura de la sesión de esta semana y memorízala. Escríbela en un lugar donde la veas todos los días." },
+      { icon:"🌸", name:"Caminata de Perdón", desc:"¿Hay alguien contra quien has guardado rencor? Camina, ora y conscientemente suelta a esa persona a Dios esta semana." },
+      { icon:"💰", name:"Generosidad", desc:"Busca una oportunidad para dar generosamente esta semana — financieramente, en tiempo o en talento. Observa cómo Dios lo multiplica." },
+      { icon:"👂", name:"Escucha sin Arreglar", desc:"Cuando una amiga comparta esta semana, resiste el impulso de arreglar. Solo escucha, haz buenas preguntas, y ora con ella. Eso es ministerio." },
+      { icon:"✍️", name:"Diario de Gratitud", desc:"Escribe 10 cosas por las que estés agradecida cada día esta semana. Observa cómo tu perspectiva cambia mientras cuentas Sus misericordias." },
+    ],
+    questions: [
+      "¿Cuál es un área de tu fe en la que has visto a Dios moverse recientemente — incluso de forma pequeña y tranquila?",
+      "¿Cómo navegas las temporadas cuando la oración se siente distante o árida? ¿Qué te trae de vuelta a Él?",
+      "¿Hay una mujer que ha moldeado tu camino de fe? ¿Qué te modeló ella?",
+      "¿Dónde te sientes llamada a dar un paso con coraje ahora mismo, y qué te está deteniendo?",
+      "¿Cómo equilibras servir a otros con cuidar tu propia salud espiritual y descanso?",
+    ],
+    icebreakers: [
+      "Si pudieras tomar café con cualquier mujer en la Biblia, ¿quién sería y qué le preguntarías?",
+      "¿Qué canción Dios ha puesto en tu corazón últimamente y por qué?",
+      "Comparte un momento cuando el tiempo de Dios fue completamente diferente al tuyo — y Él tenía razón.",
+      "¿Cuál es una cosa que desearías que toda mujer supiera sobre sí misma en Cristo?",
+      "Describe tu camino de fe en exactamente tres palabras.",
+      "¿Qué disciplina espiritual ha cambiado tu vida más?",
+      "Si tu vida tuviera un versículo, ¿cuál sería?",
+      "¿Cuál es algo en lo que estés confiando a Dios actualmente?",
+      "Nombra a alguien por quien estés silenciosamente agradecida. ¿Qué le dirías?",
+      "¿Cómo se ve 'caminar en el Espíritu' en un martes ordinario para ti?",
+      "Comparte un momento cuando una hermana habló algo sobre ti que realmente necesitabas escuchar.",
+      "¿Qué asignación del Reino sientes que Dios está poniendo en tu corazón esta temporada?",
+      "¿Cuál es una mentira que solías creer sobre ti que Dios ha reemplazado con verdad?",
+      "Si pudieras orar una cosa por todos en esta sala ahora mismo, ¿cuál sería?",
+      "¿Qué significa comunidad para ti, y cómo este grupo ha vivido eso?",
+    ]
   },
   pt: {
     nextGathering: 'Próximo Encontro',
@@ -947,6 +1023,44 @@ const TRANSLATIONS = {
     newChallenge: 'Novo desafio — você consegue, irmã! 💪',
     yourRequest: 'Seu pedido foi compartilhado. 🙏',
     thanksTrusting: 'Enviado anonimamente. Obrigada por confiar em nós. ✦',
+    challenges: [
+      { icon:"📖", name:"Tempo Silencioso Diário", desc:"Dedique 15 minutos cada manhã desta semana às Escrituras e oração antes de abrir seu telefone. Deixe Sua voz ser a primeira que você ouve cada dia." },
+      { icon:"💌", name:"Encorajar uma Irmã", desc:"Escreva um bilhete manuscrito ou envie uma mensagem sincera para uma irmã em sua vida. Deixe-a saber que ela é vista, valorizada e orada." },
+      { icon:"🙏", name:"Ore por Três Pessoas", desc:"Escolha três pessoas — uma que te machucou, uma que precisa de cura, uma que não conhece Cristo — e ore por elas todos os dias desta semana." },
+      { icon:"🤲", name:"Ato de Serviço", desc:"Encontre uma forma tangível de servir alguém fora de sua casa esta semana. Pode ser pequeno: uma refeição, um passeio, ouvir sem agenda." },
+      { icon:"🌿", name:"Descanso Sabático", desc:"Escolha uma hora esta semana para desconectar completamente e descansar na presença de Deus. Sem tarefas, sem scroll — apenas quietude e gratidão." },
+      { icon:"🗣️", name:"Compartilhe Sua Fé", desc:"Encontre uma oportunidade natural esta semana para compartilhar algo que Deus fez em sua vida com alguém que poderia precisar ouvir." },
+      { icon:"🦋", name:"Jejum e Busque", desc:"Pule uma refeição esta semana e use esse tempo para jejuar e orar por algo específico em que está confiando a Deus nesta temporada." },
+      { icon:"📝", name:"Memorize um Versículo", desc:"Escolha uma escritura da sessão desta semana e memorize. Escreva-a em um lugar onde você a veja todos os dias." },
+      { icon:"🌸", name:"Caminhada de Perdão", desc:"Há alguém contra quem você guardou ressentimento? Caminhe, ore, e conscientemente liberte essa pessoa a Deus esta semana." },
+      { icon:"💰", name:"Doação Generosa", desc:"Procure uma oportunidade para dar generosamente esta semana — financeiramente, em tempo, ou em talento. Veja como Deus o multiplica." },
+      { icon:"👂", name:"Ouça sem Consertar", desc:"Quando uma amiga compartilhar esta semana, resista ao impulso de consertar. Apenas ouça, faça boas perguntas, e ore com ela. Isso é ministério." },
+      { icon:"✍️", name:"Diário de Gratidão", desc:"Escreva 10 coisas pelas quais você é grata cada dia desta semana. Veja sua perspectiva mudar conforme conta Suas misericórdias." },
+    ],
+    questions: [
+      "Qual é uma área de sua fé em que você viu Deus se mover recentemente — mesmo de forma pequena e silenciosa?",
+      "Como você navega as temporadas quando a oração se sente distante ou árida? O que a traz de volta a Ele?",
+      "Há uma mulher que moldou sua jornada de fé? O que ela a modelou?",
+      "Onde você se sente chamada a sair coragem agora, e o que a está impedindo?",
+      "Como você equilibra servir aos outros com nutrir sua própria saúde espiritual e descanso?",
+    ],
+    icebreakers: [
+      "Se você pudesse tomar café com qualquer mulher na Bíblia, quem seria e o que perguntaria a ela?",
+      "Que música Deus colocou em seu coração ultimamente e por quê?",
+      "Compartilhe um momento em que o tempo de Deus foi completamente diferente do seu — e Ele tinha razão.",
+      "Qual é uma coisa que você desejaria que toda mulher soubesse sobre si mesma em Cristo?",
+      "Descreva sua jornada de fé em exatamente três palavras.",
+      "Qual disciplina espiritual mudou sua vida mais?",
+      "Se sua vida tivesse um versículo, qual seria?",
+      "O que é algo em que você está confiando a Deus agora?",
+      "Nomeie alguém por quem você está silenciosamente grata. O que você diria a ela?",
+      "O que significa 'caminhar no Espírito' em uma terça-feira ordinária para você?",
+      "Compartilhe um momento em que uma irmã falou algo sobre você que você realmente precisava ouvir.",
+      "Que atribuição do Reino você sente que Deus está colocando em seu coração nesta temporada?",
+      "Qual é uma mentira que você costumava acreditar sobre si mesma que Deus substituiu pela verdade?",
+      "Se você pudesse orar uma coisa por todos nesta sala agora, qual seria?",
+      "O que comunidade significa para você, e como este grupo vivenciou isso?",
+    ]
   }
 };
 
@@ -1017,6 +1131,8 @@ function updatePageLanguage() {
   if (tableRows[4]) tableRows[4].innerHTML = t('meetingLocation');
   renderPrayers();
   renderChallenge();
+  renderQuestions();
+  updateIcebreaker();
 }
 
 // Set initial language button state
@@ -1172,7 +1288,8 @@ function saveVerse() {
 
 /* ── CHALLENGE ─────────────────────────────── */
 function renderChallenge() {
-  const c = CHALLENGES[challengeIdx % CHALLENGES.length];
+  const challenges = t('challenges');
+  const c = challenges[challengeIdx % challenges.length];
   document.getElementById('challengeIcon').textContent = c.icon;
   document.getElementById('challengeName').textContent = c.name;
   document.getElementById('challengeDesc').textContent = c.desc;
@@ -1186,15 +1303,18 @@ challengeIdx = Math.floor(Date.now() / (7 * 86400000)) % CHALLENGES.length;
 renderChallenge();
 
 /* ── QUESTIONS ─────────────────────────────── */
-(function renderQuestions() {
+function renderQuestions() {
   const el = document.getElementById('qList');
-  QUESTIONS.forEach((q, i) => {
+  el.innerHTML = '';
+  const questions = t('questions');
+  questions.forEach((q, i) => {
     const row = document.createElement('div');
     row.className = 'q-item';
     row.innerHTML = '<span class="q-n">' + (i + 1) + '</span><p class="q-text">' + q + '</p>';
     el.appendChild(row);
   });
-})();
+}
+renderQuestions();
 
 /* ── ICEBREAKER ─────────────────────────────── */
 function spinIce() {
@@ -1210,12 +1330,18 @@ function spinIce() {
     if (ticks >= 10) {
       clearInterval(iv);
       icon.textContent = '🌺';
-      iceIdx = Math.floor(Math.random() * ICEBREAKERS.length);
-      document.getElementById('iceQ').textContent = ICEBREAKERS[iceIdx];
+      const icebreakers = t('icebreakers');
+      iceIdx = Math.floor(Math.random() * icebreakers.length);
+      document.getElementById('iceQ').textContent = icebreakers[iceIdx];
     }
   }, 75);
 }
-document.getElementById('iceQ').textContent = ICEBREAKERS[iceIdx];
+function updateIcebreaker() {
+  const icebreakers = t('icebreakers');
+  iceIdx = Math.floor(Math.random() * icebreakers.length);
+  document.getElementById('iceQ').textContent = icebreakers[iceIdx];
+}
+updateIcebreaker();
 
 /* ── PRAYER WALL ───────────────────────────── */
 function renderPrayers() {
