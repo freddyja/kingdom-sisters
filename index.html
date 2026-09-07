@@ -637,9 +637,9 @@ textarea:focus { border-color: var(--border-hi); }
     <table class="info-tbl">
       <tr><td>Group</td><td>Kingdom Sisters</td></tr>
       <tr><td>Purpose</td><td>Women growing together in faith — worshipping, studying Scripture, and serving the Kingdom of God side by side</td></tr>
-      <tr><td>Meets</td><td>September 10 & 17</td></tr>
-      <tr><td>Time</td><td>9:30 AM – 12:00 PM (Eastern)</td></tr>
-      <tr><td>Location</td><td>Gigi DeHoyos' Home<br>2159 Maximilian Avenue<br>Spring Hill, FL</td></tr>
+      <tr><td>Meets</td><td>September 10, 17 & 24</td></tr>
+      <tr><td>Time</td><td>10:00 AM – 1:00 PM (Eastern)</td></tr>
+      <tr><td>Location</td><td>Raquel's Home<br>1720 Alameda Dr<br>Spring Hill, FL</td></tr>
     </table>
   </section>
 
@@ -773,7 +773,7 @@ let currentVerse = null;
 let verseJournal = [];
 let challengeIdx = 0;
 let iceIdx = Math.floor(Math.random() * ICEBREAKERS.length);
-let userPrayers = [];
+let userPrayers = JSON.parse(localStorage.getItem('userPrayers') || '[]');
 
 /* ── THEME ─────────────────────────────────── */
 function toggleTheme() {
@@ -796,16 +796,17 @@ function toast(msg) {
 /* ── COUNTDOWN ─────────────────────────────── */
 function nextMeeting() {
   const now = new Date();
-  // Meeting dates in 2026: Sept 10, Sept 17
+  // Meeting dates in 2026: Sept 10, Sept 17, Sept 24
   const meetingDates = [
-    new Date(2026, 8, 10, 13, 30, 0, 0), // Sept 10, 9:30 AM ET
-    new Date(2026, 8, 17, 13, 30, 0, 0)  // Sept 17, 9:30 AM ET
+    new Date(2026, 8, 10, 14, 0, 0, 0), // Sept 10, 10:00 AM ET
+    new Date(2026, 8, 17, 14, 0, 0, 0), // Sept 17, 10:00 AM ET
+    new Date(2026, 8, 24, 14, 0, 0, 0)  // Sept 24, 10:00 AM ET
   ];
   // Find next upcoming date
   for (const date of meetingDates) {
     if (date > now) return date;
   }
-  // If no future dates, return Sept 17
+  // If no future dates, return Sept 24
   return meetingDates[meetingDates.length - 1];
 }
 function tickCountdown() {
@@ -833,8 +834,9 @@ tickCountdown();
 /* ── RSVP ──────────────────────────────────── */
 function getMeetingKey() {
   const meetingDates = [
-    new Date(2026, 8, 10, 13, 30),
-    new Date(2026, 8, 17, 13, 30)
+    new Date(2026, 8, 10, 14, 0),
+    new Date(2026, 8, 17, 14, 0),
+    new Date(2026, 8, 24, 14, 0)
   ];
   const now = new Date();
   for (const date of meetingDates) {
@@ -870,6 +872,9 @@ function submitRsvp() {
   localStorage.setItem('rsvpData', JSON.stringify({meetingDate: getMeetingKey(), name: rsvpName}));
   updateRsvpUI();
   closeRsvpModal();
+  // Open SMS with pre-filled message
+  const message = `I'm attending Kingdom Sisters: ${name}`;
+  window.location.href = `sms:3528030109?body=${encodeURIComponent(message)}`;
   toast('We\'re so excited to see you there! 🙏');
 }
 
@@ -988,6 +993,7 @@ function submitPrayer() {
   if (!val) { toast('Please write your prayer request.'); return; }
   const anon = document.getElementById('prayerAnon').checked;
   userPrayers.push({ who: anon ? 'Anonymous' : 'You', msg: val });
+  localStorage.setItem('userPrayers', JSON.stringify(userPrayers));
   document.getElementById('prayerInput').value = '';
   renderPrayers();
   toast('Your request has been shared. 🙏');
