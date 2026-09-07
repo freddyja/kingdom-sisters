@@ -97,9 +97,46 @@ body {
   padding: 0 24px;
 }
 
+/* ── Language Bar ─────────────────────────────────────── */
+.lang-bar {
+  background: var(--bg-raised);
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+.lang-btn {
+  background: rgba(201, 153, 63, 0.15);
+  border: 2px solid rgba(201, 153, 63, 0.25);
+  color: rgba(243, 235, 216, 0.75);
+  border-radius: 50px;
+  padding: 7px 16px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.lang-btn:hover {
+  background: rgba(201, 153, 63, 0.22);
+  color: #fff;
+}
+
+.lang-btn.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--bg);
+}
+
 /* ── Top bar ──────────────────────────────────────────── */
 .topbar {
-  position: sticky; top: 0; z-index: 50;
+  position: sticky; top: 50px; z-index: 50;
   padding: 14px 0;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
@@ -514,6 +551,13 @@ textarea:focus { border-color: var(--border-hi); }
 </head>
 <body>
 
+<!-- Language Bar -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLanguage('en')">🇺🇸 English</button>
+  <button class="lang-btn" onclick="setLanguage('es')">🇲🇽 Español</button>
+  <button class="lang-btn" onclick="setLanguage('pt')">🇧🇷 Português</button>
+</div>
+
 <!-- Top bar -->
 <div class="topbar">
   <div class="topbar-inner">
@@ -575,18 +619,6 @@ textarea:focus { border-color: var(--border-hi); }
     </div>
   </div>
 
-  <!-- Send Prayer/Question Modal -->
-  <div id="sendModal" class="modal" style="display:none;">
-    <div class="modal-content">
-      <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 16px; color: var(--gold);" id="sendModalTitle">Send This?</h3>
-      <p style="margin-bottom: 20px; color: var(--text-2);">How would you like to share this with Raquel?</p>
-      <div style="display: flex; flex-direction: column; gap: 10px;">
-        <button class="btn btn-gold" style="width: 100%;" onclick="sendViaEmail()">📧 Send via Email</button>
-        <button class="btn btn-gold" style="width: 100%;" onclick="sendViaSMS()">💬 Send via Text</button>
-        <button style="width: 100%; padding: 12px; background: var(--bg-raised); border: 1px solid var(--border); color: var(--text); border-radius: 4px; cursor: pointer; font-family: 'DM Sans', sans-serif;" onclick="closeSendModal()">Just Save Locally</button>
-      </div>
-    </div>
-  </div>
 
   <!-- 3 · Scripture -->
   <section class="section">
@@ -772,6 +804,211 @@ const SEED_PRAYERS = [
   { who:"Sister Yolanda", msg:"Asking for wisdom as I step into a new leadership role at work. I want to honor God in it." },
 ];
 
+/* ── TRANSLATIONS ─────────────────────────── */
+const TRANSLATIONS = {
+  en: {
+    nextGathering: 'Next Gathering',
+    commitment: 'Commitment',
+    whoAttending: "Who's Attending?",
+    enterName: 'Enter your name to confirm your attendance.',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    ilBeThere: "I'll Be There",
+    verseOfTheWeek: 'Verse of the Week',
+    all: 'All',
+    faith: 'Faith',
+    grace: 'Grace',
+    courage: 'Courage',
+    purpose: 'Purpose',
+    sisterhood: 'Sisterhood',
+    prayer: 'Prayer',
+    drawVerse: 'Draw a Verse',
+    saveJournal: 'Save to Journal',
+    weeklyChallenge: 'Weekly Challenge',
+    nextChallenge: 'Next Challenge →',
+    discussionQuestions: 'Discussion Questions',
+    icebreaker: 'Icebreaker',
+    spin: 'Spin',
+    groupDetails: 'Group Details',
+    group: 'Group',
+    purpose_label: 'Purpose',
+    meets: 'Meets',
+    time: 'Time',
+    location: 'Location',
+    prayerWall: 'Prayer Wall',
+    sharePrayer: 'Share Request',
+    anonymous: 'Anonymous',
+    anonQuestions: 'Ask Anonymously',
+    submit: 'Submit →',
+    willYouJoin: "Will you be joining your sisters at our next gathering?\nLet us know — we'd love to save a seat for you.",
+    safePlace: 'A safe place to ask what\'s on your heart. No names, no judgment. Our leaders will address questions at the next gathering.',
+    prayerPlaceholder: 'Share a prayer request with your sisters…',
+    questionPlaceholder: 'Your question or thought…',
+    verse: '"She is clothed with strength and dignity,<br>and she laughs without fear of the future."',
+    verseRef: 'Proverbs 31:25',
+    loading: 'Loading…',
+    meetingDate: 'September 10, 17 & 24',
+    meetingTime: '10:00 AM – 1:00 PM (Eastern)',
+    meetingLocation: 'Raquel\'s Home<br>1720 Alameda Dr<br>Spring Hill, FL',
+    purposeText: 'Women growing together in faith — worshipping, studying Scripture, and serving the Kingdom of God side by side',
+    noPrayers: 'No prayer requests yet — be the first to share.',
+    days: 'Days',
+    hours: 'Hours',
+    mins: 'Mins',
+    secs: 'Secs',
+    gatheringToday: '🎉 Gathering is today — see you soon, sister!',
+    cantWait: '✦ We can\'t wait to see you, {name}! ✦',
+    submitPleaseWrite: 'Please write your prayer request.',
+    submitTypeQuestion: 'Please type your question first.',
+    sendingText: 'Sending via text…',
+    gatheringJoy: 'We\'re so excited to see you there! 🙏',
+    tapSpin: 'Tap spin to land on a question for the group.',
+    pressDraw: 'Press "Draw a Verse" to receive today\'s scripture.',
+    saved: 'Saved',
+    addedJournal: 'Added to your verse journal 📒',
+    alreadyJournal: 'Already in your journal.',
+    drawFirst: 'Draw a verse first.',
+    noVersesTheme: 'No verses for that theme.',
+    newChallenge: 'New challenge — you\'ve got this, sister! 💪',
+    yourRequest: 'Your request has been shared. 🙏',
+    thanksTrusting: 'Submitted anonymously. Thank you for trusting us. ✦',
+  },
+  es: {
+    nextGathering: 'Próxima Reunión',
+    commitment: 'Compromiso',
+    whoAttending: '¿Quién asistirá?',
+    enterName: 'Ingresa tu nombre para confirmar tu asistencia.',
+    confirm: 'Confirmar',
+    cancel: 'Cancelar',
+    ilBeThere: 'Estaré allí',
+    verseOfTheWeek: 'Versículo de la Semana',
+    all: 'Todos',
+    faith: 'Fe',
+    grace: 'Gracia',
+    courage: 'Coraje',
+    purpose: 'Propósito',
+    sisterhood: 'Hermandad',
+    prayer: 'Oración',
+    drawVerse: 'Sacar un Versículo',
+    saveJournal: 'Guardar en Diario',
+    weeklyChallenge: 'Desafío Semanal',
+    nextChallenge: 'Próximo Desafío →',
+    discussionQuestions: 'Preguntas de Discusión',
+    icebreaker: 'Rompehielo',
+    spin: 'Girar',
+    groupDetails: 'Detalles del Grupo',
+    group: 'Grupo',
+    purpose_label: 'Propósito',
+    meets: 'Se reúne',
+    time: 'Hora',
+    location: 'Ubicación',
+    prayerWall: 'Muro de Oración',
+    sharePrayer: 'Compartir Solicitud',
+    anonymous: 'Anónimo',
+    anonQuestions: 'Preguntar Anónimamente',
+    submit: 'Enviar →',
+    willYouJoin: '¿Te unirás a tus hermanas en nuestro próximo encuentro?\nHaznos saber — nos encantaría guardar un lugar para ti.',
+    safePlace: 'Un lugar seguro para preguntar lo que hay en tu corazón. Sin nombres, sin juicio. Nuestros líderes responderán las preguntas en el próximo encuentro.',
+    prayerPlaceholder: 'Comparte una solicitud de oración con tus hermanas…',
+    questionPlaceholder: 'Tu pregunta o pensamiento…',
+    verse: '"Está vestida de fuerza y dignidad,\ny se ríe sin temor al futuro."',
+    verseRef: 'Proverbios 31:25',
+    loading: 'Cargando…',
+    meetingDate: '10, 17 y 24 de Septiembre',
+    meetingTime: '10:00 AM – 1:00 PM (Hora del Este)',
+    meetingLocation: 'Casa de Raquel<br>1720 Alameda Dr<br>Spring Hill, FL',
+    purposeText: 'Mujeres creciendo juntas en fe — adorando, estudiando las Escrituras y sirviendo al Reino de Dios lado a lado',
+    noPrayers: 'Aún no hay solicitudes de oración — sé la primera en compartir.',
+    days: 'Días',
+    hours: 'Horas',
+    mins: 'Minutos',
+    secs: 'Segundos',
+    gatheringToday: '🎉 El encuentro es hoy — nos vemos pronto, hermana!',
+    cantWait: '✦ ¡Tenemos muchas ganas de verte, {name}! ✦',
+    submitPleaseWrite: 'Por favor escribe tu solicitud de oración.',
+    submitTypeQuestion: 'Por favor escribe tu pregunta primero.',
+    sendingText: 'Enviando por texto…',
+    gatheringJoy: '¡Estamos muy emocionadas de verte allí! 🙏',
+    tapSpin: 'Toca girar para llegar a una pregunta para el grupo.',
+    pressDrawVerse: 'Presiona "Sacar un Versículo" para recibir la escritura del hoy.',
+    saved: 'Guardado',
+    addedJournal: 'Añadido a tu diario de versículos 📒',
+    alreadyJournal: 'Ya está en tu diario.',
+    drawFirst: 'Saca un versículo primero.',
+    noVersesTheme: 'No hay versículos para ese tema.',
+    newChallenge: '¡Nuevo desafío — lo tienes, hermana! 💪',
+    yourRequest: 'Tu solicitud ha sido compartida. 🙏',
+    thanksTrusting: 'Enviado anónimamente. Gracias por confiar en nosotras. ✦',
+  },
+  pt: {
+    nextGathering: 'Próximo Encontro',
+    commitment: 'Compromisso',
+    whoAttending: 'Quem está comparecendo?',
+    enterName: 'Digite seu nome para confirmar sua presença.',
+    confirm: 'Confirmar',
+    cancel: 'Cancelar',
+    ilBeThere: 'Estarei Lá',
+    verseOfTheWeek: 'Versículo da Semana',
+    all: 'Todos',
+    faith: 'Fé',
+    grace: 'Graça',
+    courage: 'Coragem',
+    purpose: 'Propósito',
+    sisterhood: 'Irmandade',
+    prayer: 'Oração',
+    drawVerse: 'Tirar um Versículo',
+    saveJournal: 'Salvar no Diário',
+    weeklyChallenge: 'Desafio Semanal',
+    nextChallenge: 'Próximo Desafio →',
+    discussionQuestions: 'Perguntas de Discussão',
+    icebreaker: 'Quebra-gelo',
+    spin: 'Girar',
+    groupDetails: 'Detalhes do Grupo',
+    group: 'Grupo',
+    purpose_label: 'Propósito',
+    meets: 'Encontra-se',
+    time: 'Hora',
+    location: 'Localização',
+    prayerWall: 'Muro de Oração',
+    sharePrayer: 'Compartilhar Pedido',
+    anonymous: 'Anônimo',
+    anonQuestions: 'Perguntar Anonimamente',
+    submit: 'Enviar →',
+    willYouJoin: 'Você se juntará às suas irmãs em nosso próximo encontro?\nDiga-nos — adoraríamos guardar um lugar para você.',
+    safePlace: 'Um lugar seguro para perguntar o que está em seu coração. Sem nomes, sem julgamento. Nossos líderes responderão as perguntas no próximo encontro.',
+    prayerPlaceholder: 'Compartilhe um pedido de oração com suas irmãs…',
+    questionPlaceholder: 'Sua pergunta ou pensamento…',
+    verse: '"Ela está vestida de força e dignidade,\ne ri sem medo do futuro."',
+    verseRef: 'Provérbios 31:25',
+    loading: 'Carregando…',
+    meetingDate: '10, 17 e 24 de Setembro',
+    meetingTime: '10:00 AM – 1:00 PM (Horário do Leste)',
+    meetingLocation: 'Casa de Raquel<br>1720 Alameda Dr<br>Spring Hill, FL',
+    purposeText: 'Mulheres crescendo juntas na fé — adorando, estudando as Escrituras e servindo o Reino de Deus lado a lado',
+    noPrayers: 'Ainda não há pedidos de oração — seja a primeira a compartilhar.',
+    days: 'Dias',
+    hours: 'Horas',
+    mins: 'Minutos',
+    secs: 'Segundos',
+    gatheringToday: '🎉 O encontro é hoje — até breve, irmã!',
+    cantWait: '✦ Mal podemos esperar para vê-la, {name}! ✦',
+    submitPleaseWrite: 'Por favor, escreva seu pedido de oração.',
+    submitTypeQuestion: 'Por favor, digite sua pergunta primeiro.',
+    sendingText: 'Enviando por texto…',
+    gatheringJoy: 'Estamos muito animadas em vê-la lá! 🙏',
+    tapSpin: 'Toque girar para chegar a uma pergunta para o grupo.',
+    pressDrawVerse: 'Pressione "Tirar um Versículo" para receber a escritura de hoje.',
+    saved: 'Salvo',
+    addedJournal: 'Adicionado ao seu diário de versículos 📒',
+    alreadyJournal: 'Já está no seu diário.',
+    drawFirst: 'Tire um versículo primeiro.',
+    noVersesTheme: 'Nenhum versículo para esse tema.',
+    newChallenge: 'Novo desafio — você consegue, irmã! 💪',
+    yourRequest: 'Seu pedido foi compartilhado. 🙏',
+    thanksTrusting: 'Enviado anonimamente. Obrigada por confiar em nós. ✦',
+  }
+};
+
 /* ── STATE ─────────────────────────────────── */
 let activeFilter = 'all';
 let currentVerse = null;
@@ -779,6 +1016,7 @@ let verseJournal = [];
 let challengeIdx = 0;
 let iceIdx = Math.floor(Math.random() * ICEBREAKERS.length);
 let userPrayers = JSON.parse(localStorage.getItem('userPrayers') || '[]');
+let currentLang = localStorage.getItem('language') || 'en';
 
 /* ── THEME ─────────────────────────────────── */
 function toggleTheme() {
@@ -788,6 +1026,72 @@ function toggleTheme() {
   root.setAttribute('data-theme', next);
   document.getElementById('themeBtn').textContent = next === 'dark' ? 'Light' : 'Dark';
 }
+
+/* ── LANGUAGE ──────────────────────────────── */
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('language', lang);
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.dataset.lang === lang) btn.classList.add('active');
+  });
+  updatePageLanguage();
+}
+
+function t(key) {
+  return TRANSLATIONS[currentLang]?.[key] || TRANSLATIONS['en']?.[key] || key;
+}
+
+function updatePageLanguage() {
+  // Update hero section
+  document.querySelector('.hero-verse').innerHTML = t('verse') + '<cite>' + t('verseRef') + '</cite>';
+  // Update section labels
+  const labels = {
+    'label1': 'nextGathering',
+    'label2': 'commitment',
+    'label3': 'verseOfTheWeek',
+    'label4': 'weeklyChallenge',
+    'label5': 'discussionQuestions',
+    'label6': 'icebreaker',
+    'label7': 'groupDetails',
+    'label8': 'prayerWall',
+    'label9': 'anonQuestions'
+  };
+  document.querySelectorAll('.label').forEach((el, idx) => {
+    const key = Object.values(labels)[idx];
+    if (key) el.textContent = t(key);
+  });
+  // Update buttons and text
+  document.getElementById('rsvpBtn').textContent = t('ilBeThere');
+  document.getElementById('verseText').textContent = t('pressDraw');
+  document.querySelector('[onclick="drawVerse()"]').textContent = t('drawVerse');
+  document.querySelector('[onclick="saveVerse()"]').textContent = t('saveJournal');
+  document.querySelector('[onclick="nextChallenge()"]').textContent = t('nextChallenge');
+  document.querySelector('[onclick="spinIce()"]').textContent = t('spin');
+  document.querySelector('[onclick="submitPrayer()"]').textContent = t('sharePrayer');
+  document.querySelector('[onclick="submitAnon()"]').textContent = t('submit');
+  // Update placeholders
+  document.getElementById('prayerInput').placeholder = t('prayerPlaceholder');
+  document.getElementById('anonInput').placeholder = t('questionPlaceholder');
+  // Update RSVP card text
+  document.querySelector('.rsvp-lede').textContent = t('willYouJoin');
+  // Update anon intro
+  document.querySelector('.anon-intro').textContent = t('safePlace');
+  // Update table
+  const tableRows = document.querySelectorAll('.info-tbl td:last-child');
+  if (tableRows[2]) tableRows[2].textContent = t('meetingDate');
+  if (tableRows[3]) tableRows[3].textContent = t('meetingTime');
+  if (tableRows[4]) tableRows[4].innerHTML = t('meetingLocation');
+  renderPrayers();
+  renderChallenge();
+}
+
+// Set initial language button state
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    if (btn.dataset.lang === currentLang) btn.classList.add('active');
+  });
+});
 
 /* ── TOAST ─────────────────────────────────── */
 function toast(msg) {
@@ -818,7 +1122,7 @@ function tickCountdown() {
   const target = nextMeeting();
   const diff = target - Date.now();
   if (diff <= 0) {
-    document.getElementById('meetingDateLabel').textContent = '🎉 Gathering is today — see you soon, sister!';
+    document.getElementById('meetingDateLabel').textContent = t('gatheringToday');
     return;
   }
   const d = Math.floor(diff / 86400000);
@@ -829,6 +1133,11 @@ function tickCountdown() {
   document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
   document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
   document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+  // Update labels
+  document.querySelectorAll('.cd-lbl').forEach((el, idx) => {
+    const labels = ['days', 'hours', 'mins', 'secs'];
+    el.textContent = t(labels[idx]);
+  });
   const opts = { weekday:'long', month:'long', day:'numeric', year:'numeric' };
   document.getElementById('meetingDateLabel').textContent =
     target.toLocaleDateString('en-US', opts) + '  ·  10:00 AM ET';
@@ -880,7 +1189,7 @@ function submitRsvp() {
   // Open SMS with pre-filled message
   const message = `I'm attending Kingdom Sisters: ${name}`;
   window.location.href = `sms:3528030109?body=${encodeURIComponent(message)}`;
-  toast('We\'re so excited to see you there! 🙏');
+  toast(t('gatheringJoy'));
 }
 
 function updateRsvpUI() {
@@ -888,7 +1197,7 @@ function updateRsvpUI() {
     document.getElementById('rsvpPersonal').style.display = 'none';
     return;
   }
-  document.getElementById('rsvpPersonal').textContent = `✦ We can't wait to see you, ${rsvpName}! ✦`;
+  document.getElementById('rsvpPersonal').textContent = t('cantWait').replace('{name}', rsvpName);
   document.getElementById('rsvpPersonal').style.display = 'block';
 }
 
@@ -906,26 +1215,26 @@ function setFilter(f, el) {
 }
 function drawVerse() {
   const pool = activeFilter === 'all' ? VERSES : VERSES.filter(v => v.c === activeFilter);
-  if (!pool.length) { toast('No verses for that theme.'); return; }
+  if (!pool.length) { toast(t('noVersesTheme')); return; }
   const v = pool[Math.floor(Math.random() * pool.length)];
   currentVerse = v;
   const el = document.getElementById('verseText');
   el.style.opacity = '0';
   setTimeout(() => {
-    el.textContent = '“' + v.t + '”';
+    el.textContent = '”' + v.t + '”';
     document.getElementById('verseRef').textContent = '— ' + v.r;
     document.getElementById('savedNote').textContent = '';
-    document.getElementById('saveBtn').textContent = 'Save to Journal';
+    document.getElementById('saveBtn').textContent = t('saveJournal');
     el.style.opacity = '1';
   }, 200);
 }
 function saveVerse() {
-  if (!currentVerse) { toast('Draw a verse first.'); return; }
-  if (verseJournal.some(v => v.r === currentVerse.r)) { toast('Already in your journal.'); return; }
+  if (!currentVerse) { toast(t('drawFirst')); return; }
+  if (verseJournal.some(v => v.r === currentVerse.r)) { toast(t('alreadyJournal')); return; }
   verseJournal.push(currentVerse);
-  document.getElementById('savedNote').textContent = 'Saved (' + verseJournal.length + ')';
-  document.getElementById('saveBtn').textContent = '✓ Saved';
-  toast('Added to your verse journal 📒');
+  document.getElementById('savedNote').textContent = t('saved') + ' (' + verseJournal.length + ')';
+  document.getElementById('saveBtn').textContent = '✓ ' + t('saved');
+  toast(t('addedJournal'));
 }
 
 /* ── CHALLENGE ─────────────────────────────── */
@@ -938,7 +1247,7 @@ function renderChallenge() {
 function nextChallenge() {
   challengeIdx++;
   renderChallenge();
-  toast('New challenge — you\'ve got this, sister! 💪');
+  toast(t('newChallenge'));
 }
 challengeIdx = Math.floor(Date.now() / (7 * 86400000)) % CHALLENGES.length;
 renderChallenge();
@@ -976,15 +1285,12 @@ function spinIce() {
 document.getElementById('iceQ').textContent = ICEBREAKERS[iceIdx];
 
 /* ── PRAYER WALL ───────────────────────────── */
-let pendingContent = '';
-let pendingType = '';
-
 function renderPrayers() {
   const el = document.getElementById('prayerList');
   const all = [...SEED_PRAYERS, ...userPrayers];
   el.innerHTML = '';
   if (!all.length) {
-    el.innerHTML = '<p class="empty-prayers">No prayer requests yet — be the first to share.</p>';
+    el.innerHTML = '<p class="empty-prayers">' + t('noPrayers') + '</p>';
     return;
   }
   all.forEach(p => {
@@ -998,54 +1304,31 @@ renderPrayers();
 
 function submitPrayer() {
   const val = document.getElementById('prayerInput').value.trim();
-  if (!val) { toast('Please write your prayer request.'); return; }
+  if (!val) { toast(t('submitPleaseWrite')); return; }
   const anon = document.getElementById('prayerAnon').checked;
-  userPrayers.push({ who: anon ? 'Anonymous' : 'You', msg: val });
+  userPrayers.push({ who: anon ? t('anonymous') : 'You', msg: val });
   localStorage.setItem('userPrayers', JSON.stringify(userPrayers));
+  const message = `Prayer Request: ${val}`;
+  window.location.href = `sms:3528030109?body=${encodeURIComponent(message)}`;
   document.getElementById('prayerInput').value = '';
   renderPrayers();
-  pendingContent = val;
-  pendingType = 'prayer';
-  document.getElementById('sendModalTitle').textContent = 'Share Prayer Request?';
-  openSendModal();
+  toast(t('sendingText') + ' 🙏');
 }
 
 /* ── ANON QUESTIONS ────────────────────────── */
 function submitAnon() {
   const val = document.getElementById('anonInput').value.trim();
-  if (!val) { toast('Please type your question first.'); return; }
-  document.getElementById('anonInput').value = '';
-  pendingContent = val;
-  pendingType = 'question';
-  document.getElementById('sendModalTitle').textContent = 'Share Question?';
-  openSendModal();
-}
-
-/* ── SEND MODAL ────────────────────────────── */
-function openSendModal() {
-  document.getElementById('sendModal').style.display = 'flex';
-}
-
-function closeSendModal() {
-  document.getElementById('sendModal').style.display = 'none';
-  pendingContent = '';
-  pendingType = '';
-}
-
-function sendViaEmail() {
-  const subject = pendingType === 'prayer' ? 'Prayer Request' : 'Anonymous Question';
-  const body = encodeURIComponent(pendingContent);
-  window.location.href = `mailto:rjaraalmonte@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
-  closeSendModal();
-  toast(pendingType === 'prayer' ? 'Opening email…' : 'Opening email…');
-}
-
-function sendViaSMS() {
-  const message = pendingType === 'prayer' ? `Prayer Request: ${pendingContent}` : `Question: ${pendingContent}`;
+  if (!val) { toast(t('submitTypeQuestion')); return; }
+  const message = `Question: ${val}`;
   window.location.href = `sms:3528030109?body=${encodeURIComponent(message)}`;
-  closeSendModal();
-  toast(pendingType === 'prayer' ? 'Opening text…' : 'Opening text…');
+  document.getElementById('anonInput').value = '';
+  toast(t('sendingText') + ' ✦');
 }
+
+/* ── INITIALIZE PAGE LANGUAGE ──────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  updatePageLanguage();
+});
 </script>
 </body>
 </html>
