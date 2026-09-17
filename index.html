@@ -56,28 +56,24 @@ body {
 
 /* ── Install Button ───────────────────────────────────── */
 #installBtn {
-  position: fixed !important;
-  top: 12px !important;
-  right: 24px !important;
-  background: transparent !important;
-  border: 2px dashed var(--gold) !important;
-  color: var(--gold) !important;
-  padding: 6px 12px !important;
-  border-radius: 4px !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  font-family: 'DM Sans', sans-serif !important;
-  letter-spacing: 0.05em !important;
-  z-index: 300 !important;
-  display: inline-block !important;
+  background: transparent;
+  border: 2px dashed var(--gold);
+  color: var(--gold);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.05em;
   outline: none;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 #installBtn:hover {
-  background: var(--gold) !important;
-  color: var(--bg) !important;
+  background: var(--gold);
+  color: var(--bg);
 }
 
 /* ── Language Bar ─────────────────────────────────────── */
@@ -530,13 +526,11 @@ textarea:focus { border-color: var(--border-hi); }
   <button class="lang-btn" data-lang="pt" onclick="setLanguage('pt')">🇧🇷 Português</button>
 </div>
 
-<!-- Install App Button -->
-<button id="installBtn" onclick="installApp()">↓ Install App</button>
-
 <!-- Top bar -->
 <div class="topbar">
   <div class="topbar-inner">
     <span class="wordmark">Kingdom Sisters</span>
+    <button id="installBtn" onclick="installApp()">↓ Install App</button>
   </div>
 </div>
 
