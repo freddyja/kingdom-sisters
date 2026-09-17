@@ -504,6 +504,9 @@ textarea:focus { border-color: var(--border-hi); }
   <button class="lang-btn" data-lang="pt" onclick="setLanguage('pt')">🇧🇷 Português</button>
 </div>
 
+<!-- Install App Button -->
+<button id="installBtn" onclick="installApp()" style="position:fixed; top:12px; right:24px; background:transparent; border:2px dashed var(--gold); color:var(--gold); padding:6px 12px; border-radius:4px; font-size:12px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; letter-spacing:0.05em; z-index:150;">↓ Install App</button>
+
 <!-- Top bar -->
 <div class="topbar">
   <div class="topbar-inner">
@@ -1519,33 +1522,13 @@ let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  showInstallPrompt();
 });
 
-function showInstallPrompt() {
-  if (!deferredPrompt) return;
-  const installBar = document.createElement('div');
-  installBar.style.cssText = `
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: var(--gold); color: white; padding: 12px 20px;
-    border-radius: 4px; display: flex; align-items: center; gap: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 999;
-    max-width: 90%; font-family: 'DM Sans', sans-serif; font-size: 14px;
-    font-weight: 600; animation: slideUp 0.3s ease-out;
-  `;
-  installBar.innerHTML = `
-    <span>📲 Install Kingdom Sisters</span>
-    <button style="background: white; color: var(--gold); border: none; padding: 6px 14px; border-radius: 3px; cursor: pointer; font-weight: 700; font-size: 13px;" onclick="installApp()">Install</button>
-    <button style="background: transparent; border: none; color: white; cursor: pointer; font-size: 18px; padding: 0;" onclick="this.parentElement.remove()">×</button>
-  `;
-  document.body.appendChild(installBar);
-  const style = document.createElement('style');
-  style.textContent = `@keyframes slideUp { from { transform: translateX(-50%) translateY(100px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }`;
-  document.head.appendChild(style);
-}
-
 function installApp() {
-  if (!deferredPrompt) return;
+  if (!deferredPrompt) {
+    toast('Installation not available on this browser');
+    return;
+  }
   deferredPrompt.prompt();
   deferredPrompt.userChoice.then(choiceResult => {
     if (choiceResult.outcome === 'accepted') {
