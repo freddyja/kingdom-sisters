@@ -1545,10 +1545,18 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 function installApp() {
+  // Check if on iOS
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
   if (!deferredPrompt) {
-    toast('Installation not available on this browser');
+    if (isIOS) {
+      toast('📱 On iPhone: tap Share → Add to Home Screen 👑');
+    } else {
+      toast('Installation not available on this browser');
+    }
     return;
   }
+
   deferredPrompt.prompt();
   deferredPrompt.userChoice.then(choiceResult => {
     if (choiceResult.outcome === 'accepted') {
