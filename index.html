@@ -1240,7 +1240,8 @@ function updatePageLanguage() {
   renderFilterPills();
 }
 
-// Set initial language button state
+// Set initial language button state and load page
+updatePageLanguage();
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.lang-btn').forEach(btn => {
     if (btn.dataset.lang === currentLang) btn.classList.add('active');
@@ -1261,9 +1262,9 @@ function nextMeeting() {
   const now = new Date();
   // Meeting dates in 2026: Sept 10, Sept 17, Sept 24
   const meetingDates = [
-    new Date(2026, 8, 10, 14, 0, 0, 0), // Sept 10, 10:00 AM ET
-    new Date(2026, 8, 17, 14, 0, 0, 0), // Sept 17, 10:00 AM ET
-    new Date(2026, 8, 24, 14, 0, 0, 0)  // Sept 24, 10:00 AM ET
+    new Date(2026, 8, 10, 10, 0, 0, 0), // Sept 10, 10:00 AM ET
+    new Date(2026, 8, 17, 10, 0, 0, 0), // Sept 17, 10:00 AM ET
+    new Date(2026, 8, 24, 10, 0, 0, 0)  // Sept 24, 10:00 AM ET
   ];
   // Find next upcoming date
   for (const date of meetingDates) {
@@ -1302,9 +1303,9 @@ tickCountdown();
 /* ── RSVP ──────────────────────────────────── */
 function getMeetingKey() {
   const meetingDates = [
-    new Date(2026, 8, 10, 14, 0),
-    new Date(2026, 8, 17, 14, 0),
-    new Date(2026, 8, 24, 14, 0)
+    new Date(2026, 8, 10, 10, 0),
+    new Date(2026, 8, 17, 10, 0),
+    new Date(2026, 8, 24, 10, 0)
   ];
   const now = new Date();
   for (const date of meetingDates) {
