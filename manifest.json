@@ -2,8 +2,8 @@
   "name": "Kingdom Sisters",
   "short_name": "Sisters",
   "description": "Women growing together in faith — worshipping, studying Scripture, and serving the Kingdom of God side by side",
-  "start_url": "/index.html",
-  "scope": "/",
+  "start_url": "/kingdom-sisters/",
+  "scope": "/kingdom-sisters/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#EAFBF7",
@@ -27,7 +27,7 @@
       "name": "Draw a Verse",
       "short_name": "Verse",
       "description": "Draw a verse of the week",
-      "url": "/index.html#verseOfTheWeek",
+      "url": "/kingdom-sisters/#verseOfTheWeek",
       "icons": [
         {
           "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%231B9AB0' width='96' height='96'/><text x='50%' y='50%' font-size='60' text-anchor='middle' dominant-baseline='central'>📖</text></svg>",
@@ -40,7 +40,7 @@
       "name": "Prayer Wall",
       "short_name": "Pray",
       "description": "Share a prayer request",
-      "url": "/index.html#prayerWall",
+      "url": "/kingdom-sisters/#prayerWall",
       "icons": [
         {
           "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%231B9AB0' width='96' height='96'/><text x='50%' y='50%' font-size='60' text-anchor='middle' dominant-baseline='central'>🙏</text></svg>",
