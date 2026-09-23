@@ -556,8 +556,7 @@ textarea:focus { border-color: var(--border-hi); }
     <table class="info-tbl">
       <tr><td>Group</td><td>Kingdom Sisters</td></tr>
       <tr><td>Purpose</td><td id="purposeTextCell">Women growing together in faith — worshipping, studying Scripture, and serving the Kingdom of God side by side</td></tr>
-      <tr><td>Meets</td><td>September 24</td></tr>
-      <tr><td>Time</td><td>10:00 AM – 1:00 PM (Eastern)</td></tr>
+      <tr><td>Time</td><td>10 am to 1 pm Eastern</td></tr>
       <tr><td>Location</td><td>Raquel's Home<br>1720 Alameda Dr<br>Spring Hill, FL</td></tr>
     </table>
   </section>
@@ -768,7 +767,7 @@ const SEED_PRAYERS = [
 const TRANSLATIONS = {
   en: {
     nextGathering: 'Next Gathering',
-    commitment: 'Commitment',
+    nextMeeting: 'Next Meeting',
     whoAttending: "Who's Attending?",
     enterName: 'Enter your name to confirm your attendance.',
     confirm: 'Confirm',
@@ -839,8 +838,8 @@ const TRANSLATIONS = {
     verse: '"She is clothed with strength and dignity,<br>and she laughs without fear of the future."',
     verseRef: 'Proverbs 31:25',
     loading: 'Loading…',
-    meetingDate: 'September 10, 17 & 24',
-    meetingTime: '10:00 AM – 1:00 PM (Eastern)',
+    meetingDate: 'September 24',
+    meetingTime: '10 am to 1 pm Eastern',
     meetingLocation: 'Raquel\'s Home<br>1720 Alameda Dr<br>Spring Hill, FL',
     purposeText: 'Women growing together in faith — worshipping, studying Scripture, and serving the Kingdom of God side by side',
     noPrayers: 'No prayer requests yet — be the first to share.',
@@ -910,7 +909,7 @@ const TRANSLATIONS = {
   },
   es: {
     nextGathering: 'Próxima Reunión',
-    commitment: 'Compromiso',
+    nextMeeting: 'Próxima Reunión',
     whoAttending: '¿Quién asistirá?',
     enterName: 'Ingresa tu nombre para confirmar tu asistencia.',
     confirm: 'Confirmar',
@@ -986,8 +985,8 @@ const TRANSLATIONS = {
     verse: '"Está vestida de fuerza y dignidad,\ny se ríe sin temor al futuro."',
     verseRef: 'Proverbios 31:25',
     loading: 'Cargando…',
-    meetingDate: '10, 17 y 24 de Septiembre',
-    meetingTime: '10:00 AM – 1:00 PM (Hora del Este)',
+    meetingDate: '24 de Septiembre',
+    meetingTime: '10 am a 1 pm Hora del Este',
     meetingLocation: 'Casa de Raquel<br>1720 Alameda Dr<br>Spring Hill, FL',
     purposeText: 'Mujeres creciendo juntas en fe — adorando, estudiando las Escrituras y sirviendo al Reino de Dios lado a lado',
     noPrayers: 'Aún no hay solicitudes de oración — sé la primera en compartir.',
@@ -1052,7 +1051,7 @@ const TRANSLATIONS = {
   },
   pt: {
     nextGathering: 'Próximo Encontro',
-    commitment: 'Compromisso',
+    nextMeeting: 'Próxima Reunião',
     whoAttending: 'Quem está comparecendo?',
     enterName: 'Digite seu nome para confirmar sua presença.',
     confirm: 'Confirmar',
@@ -1128,8 +1127,8 @@ const TRANSLATIONS = {
     verse: '"Ela está vestida de força e dignidade,\ne ri sem medo do futuro."',
     verseRef: 'Provérbios 31:25',
     loading: 'Carregando…',
-    meetingDate: '10, 17 e 24 de Setembro',
-    meetingTime: '10:00 AM – 1:00 PM (Horário do Leste)',
+    meetingDate: '24 de Setembro',
+    meetingTime: '10 am a 1 pm Horário do Leste',
     meetingLocation: 'Casa de Raquel<br>1720 Alameda Dr<br>Spring Hill, FL',
     purposeText: 'Mulheres crescendo juntas na fé — adorando, estudando as Escrituras e servindo o Reino de Deus lado a lado',
     noPrayers: 'Ainda não há pedidos de oração — seja a primeira a compartilhar.',
@@ -1225,7 +1224,7 @@ function updatePageLanguage() {
   // Update section labels
   const labels = {
     'label1': 'nextGathering',
-    'label2': 'commitment',
+    'label2': 'nextMeeting',
     'label3': 'verseOfTheWeek',
     'label4': 'weeklyChallenge',
     'label5': 'discussionQuestions',
@@ -1257,9 +1256,8 @@ function updatePageLanguage() {
   // Update table
   document.getElementById('purposeTextCell').textContent = t('purposeText');
   const tableRows = document.querySelectorAll('.info-tbl td:last-child');
-  if (tableRows[2]) tableRows[2].textContent = t('meetingDate');
-  if (tableRows[3]) tableRows[3].textContent = t('meetingTime');
-  if (tableRows[4]) tableRows[4].innerHTML = t('meetingLocation');
+  if (tableRows[2]) tableRows[2].textContent = t('meetingTime');
+  if (tableRows[3]) tableRows[3].innerHTML = t('meetingLocation');
   renderPrayers();
   renderChallenge();
   renderQuestions();
